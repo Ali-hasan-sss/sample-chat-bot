@@ -1,0 +1,172 @@
+{
+  "entries": [
+    {
+      "id": "assistant-identity",
+      "category": "Assistant",
+      "title": "AI Assistant Identity",
+      "content": "You are Meridian, the official AI assistant for Grand Meridian Hotel. You welcome guests warmly, answer questions about the hotel, dining, rooms, wellness, pool, gym, events, and contact details. You support English, Arabic, Spanish, French, German, and Mandarin. You are friendly, professional, and concise. You cannot make bookings or access guest accounts — for reservations, direct guests to front desk at +1 (555) 234-8900 or reservations@grandmeridian.com.",
+      "keywords": ["who are you", "hello", "hi", "assistant", "bot", "chatbot", "help", "مرحبا", "من انت", "مساعد", "ترحيب", "welcome", "identity"]
+    },
+    {
+      "id": "meals-breakfast",
+      "category": "Dining & Meals",
+      "title": "Breakfast",
+      "content": "Breakfast is served daily at The Sunrise Terrace (ground floor, east wing). Hours: 6:30 AM – 10:30 AM (weekdays), 6:30 AM – 11:00 AM (weekends). Buffet includes international hot dishes, fresh pastries, fruits, eggs made to order, Arabic mezze station, and specialty coffee. Executive Lounge guests (26th floor) enjoy complimentary continental breakfast 7:00 AM – 10:00 AM. In-room breakfast delivery available 7:00 AM – 11:00 AM (order via in-room tablet or dial 0).",
+      "keywords": ["breakfast", "morning meal", "buffet", "فطور", "وجبة الصباح", "إفطار", "meal", "food", "dining hours"]
+    },
+    {
+      "id": "meals-lunch-dinner",
+      "category": "Dining & Meals",
+      "title": "Lunch & Dinner",
+      "content": "Azure Restaurant (12th floor): lunch Tue–Sun 12:00 PM – 2:30 PM, dinner Tue–Sun 6:00 PM – 10:30 PM, closed Mondays. Mediterranean fine dining. Lobby Lounge (ground floor): light meals, sandwiches, salads, and cocktails daily 11:00 AM – midnight, walk-ins welcome. In-room dining: available 24 hours with full menu including Arabic, Asian, and Western dishes. Pool Bar (27th floor): snacks and beverages 11:00 AM – 7:00 PM. Azure dinner requires reservation — contact +1 (555) 234-8920 or concierge.",
+      "keywords": ["lunch", "dinner", "meals", "food", "menu", "restaurant hours", "غداء", "عشاء", "وجبات", "مواعيد الطعام", "مواعيد الوجبات", "طعام", "مطعم"]
+    },
+    {
+      "id": "meals-overview",
+      "category": "Dining & Meals",
+      "title": "Meals Schedule Overview",
+      "content": "Daily meal schedule: Breakfast 6:30–10:30 AM at Sunrise Terrace. Lunch 12:00–2:30 PM at Azure (Tue–Sun). Dinner 6:00–10:30 PM at Azure (Tue–Sun). All-day dining at Lobby Lounge 11:00 AM – midnight. 24-hour in-room dining. Pool Bar snacks 11:00 AM – 7:00 PM. Executive Lounge: breakfast 7–10 AM, afternoon tea 3–5 PM, evening canapés 6–8 PM for suite guests.",
+      "keywords": ["meal schedule", "dining times", "when is food", "restaurant open", "hours", "schedule", "مواعيد", "جدول", "وقت", "متى"]
+    },
+    {
+      "id": "room-availability",
+      "category": "Room Availability",
+      "title": "Room Availability Information",
+      "content": "Grand Meridian has 312 rooms total: 220 Standard rooms, 62 Deluxe Ocean View rooms, and 30 Suites (Executive and Presidential). Standard and Deluxe rooms are typically available year-round except peak season (June–August and December holidays) when availability may be limited. Suites require advance booking. This assistant provides general room information only — it cannot confirm real-time availability or vacant rooms. For current availability and rates, contact Reservations at +1 (555) 234-8901, reservations@grandmeridian.com, or visit the front desk. Same-day availability is subject to confirmation by reservations staff.",
+      "keywords": ["available rooms", "vacant", "empty rooms", "availability", "free rooms", "room free", "غرف فارغة", "غرف متاحة", "توفر", "حجز غرفة", "rooms available", "book room", "occupancy"]
+    },
+    {
+      "id": "rooms-deluxe",
+      "category": "Room Information",
+      "title": "Deluxe Ocean View Rooms",
+      "content": "Deluxe Ocean View rooms are 48 square meters (520 sq ft) on floors 10–25 with panoramic sea views. King bed, sitting area, upgraded minibar, bath with tub and rain shower. Maximum occupancy: 2 adults + 1 child. Nightly turndown service included. Popular choice — early booking recommended during peak season.",
+      "keywords": ["deluxe", "ocean view", "room types", "غرف", "غرفة", "إقامة"]
+    },
+    {
+      "id": "hotel-overview",
+      "category": "Hotel Information",
+      "title": "Grand Meridian Hotel Overview",
+      "content": "Grand Meridian Hotel is a five-star luxury hospitality destination located at 42 Oceanview Boulevard, Marina Bay. The hotel features 312 elegantly appointed rooms and suites across 28 floors. Check-in time is 3:00 PM and check-out time is 11:00 AM. Early check-in and late check-out may be available upon request, subject to availability. The hotel offers complimentary high-speed Wi-Fi throughout the property, 24-hour concierge service, valet parking, and a business center. Our mission is to deliver exceptional guest experiences through personalized service and world-class amenities.",
+      "keywords": ["hotel", "overview", "check-in", "check-out", "location", "address", "wifi", "concierge", "parking"]
+    },
+    {
+      "id": "hotel-contact",
+      "category": "Contact Details",
+      "title": "Hotel Contact Information",
+      "content": "Front Desk: +1 (555) 234-8900 (available 24/7). Reservations: +1 (555) 234-8901 or reservations@grandmeridian.com. Concierge: +1 (555) 234-8902 or concierge@grandmeridian.com. General inquiries: info@grandmeridian.com. Address: 42 Oceanview Boulevard, Marina Bay, CA 90210. Emergency services within the hotel: dial 0 from any in-room phone. For medical emergencies, dial 911 or contact front desk immediately.",
+      "keywords": ["contact", "phone", "email", "address", "reservations", "concierge", "emergency"]
+    },
+    {
+      "id": "rooms-standard",
+      "category": "Room Information",
+      "title": "Standard Rooms",
+      "content": "Standard rooms are 38 square meters (410 sq ft) with king or twin bed configurations. Amenities include premium bedding, blackout curtains, in-room safe, minibar, Nespresso machine, 55-inch smart TV, and marble bathroom with rain shower. Maximum occupancy: 2 adults. Daily housekeeping is provided between 9:00 AM and 4:00 PM.",
+      "keywords": ["room", "standard", "bed", "amenities", "housekeeping", "occupancy"]
+    },
+    {
+      "id": "rooms-suite",
+      "category": "Room Information",
+      "title": "Suites",
+      "content": "Executive and Presidential suites range from 75 to 180 square meters. Suites include separate living areas, premium minibar, Butler service (Presidential Suite), panoramic ocean views, and complimentary airport transfers for Presidential Suite guests. Suite guests receive priority restaurant reservations and access to the Executive Lounge on the 26th floor with complimentary breakfast, afternoon tea, and evening canapés.",
+      "keywords": ["suite", "executive", "presidential", "butler", "lounge", "luxury"]
+    },
+    {
+      "id": "wellness-overview",
+      "category": "Wellness",
+      "title": "Wellness & Spa Overview",
+      "content": "The Meridian Wellness Center is located on the 5th floor and is open daily from 6:00 AM to 10:00 PM. Services include massage therapy, facial treatments, body wraps, aromatherapy, and holistic wellness consultations. Advance booking is recommended. Spa reception: +1 (555) 234-8910. Guests must arrive 15 minutes before appointments. Robes and slippers are provided. The wellness center maintains a tranquil, phone-free environment.",
+      "keywords": ["wellness", "spa", "massage", "facial", "treatment", "relaxation", "booking"]
+    },
+    {
+      "id": "wellness-facilities",
+      "category": "Wellness",
+      "title": "Wellness Facilities Available",
+      "content": "Available wellness facilities include: thermal suite with heated loungers, experience showers, relaxation lounge with herbal tea service, yoga studio (daily classes at 7:00 AM and 5:30 PM), meditation room, and outdoor terrace with ocean views. Complimentary access for hotel guests. Day passes available for non-guests at $85 per person. Yoga mats and props are provided free of charge.",
+      "keywords": ["wellness facilities", "yoga", "meditation", "thermal", "relaxation", "terrace"]
+    },
+    {
+      "id": "sauna",
+      "category": "Sauna",
+      "title": "Sauna & Steam Room",
+      "content": "Finnish dry sauna (80-90°C) and eucalyptus steam room are located in the wellness area on the 5th floor. Open 6:00 AM to 10:00 PM daily. Towels are provided at the entrance. Maximum recommended session is 15 minutes. Not recommended for pregnant guests, guests with cardiovascular conditions, or children under 16. Cold plunge pool available adjacent to sauna area. Please shower before entering.",
+      "keywords": ["sauna", "steam", "finnish", "eucalyptus", "cold plunge", "wellness"]
+    },
+    {
+      "id": "gym",
+      "category": "Gym",
+      "title": "Fitness Center",
+      "content": "The 24-hour fitness center on the 5th floor features Technogym equipment including treadmills, ellipticals, rowing machines, free weights up to 50kg, cable machines, and a functional training zone. Personal training sessions available ($75/hour, book via concierge). Complimentary fitness towels and water stations provided. Minimum age 16; guests 16-18 must be accompanied by an adult.",
+      "keywords": ["gym", "fitness", "workout", "personal training", "equipment", "24 hour"]
+    },
+    {
+      "id": "pool",
+      "category": "Pool",
+      "title": "Swimming Pool",
+      "content": "Rooftop infinity pool on the 27th floor with panoramic ocean views. Open 7:00 AM to 9:00 PM daily (weather permitting). Pool depth ranges from 1.2m to 1.8m. Heated to 28°C year-round. Poolside cabanas available for rent ($50/half day). Lifeguard on duty 10:00 AM to 6:00 PM. Children under 12 must be supervised by an adult. Pool towels provided at the pool deck entrance.",
+      "keywords": ["pool", "swimming", "infinity", "rooftop", "heated", "cabana", "lifeguard"]
+    },
+    {
+      "id": "restaurant-azure",
+      "category": "Restaurant",
+      "title": "Azure Restaurant",
+      "content": "Azure is our signature fine-dining restaurant on the 12th floor, serving contemporary Mediterranean cuisine. Open Tuesday to Sunday: lunch 12:00 PM - 2:30 PM, dinner 6:00 PM - 10:30 PM. Closed Mondays. Dress code: smart casual (no flip-flops or beachwear). Reservations required for dinner; book via concierge, +1 (555) 234-8920, or the in-room dining tablet. Private dining room available for up to 12 guests.",
+      "keywords": ["restaurant", "azure", "dining", "reservation", "mediterranean", "fine dining", "book table"]
+    },
+    {
+      "id": "restaurant-booking",
+      "category": "Restaurant",
+      "title": "Restaurant Reservations",
+      "content": "To book a restaurant table: call +1 (555) 234-8920, email dining@grandmeridian.com, ask concierge, or use the hotel mobile app. Provide preferred date, time, party size, and dietary requirements. Cancellations must be made at least 4 hours in advance. The Lobby Lounge (ground floor) accepts walk-ins for light meals and cocktails daily 11:00 AM - midnight. In-room dining available 24 hours.",
+      "keywords": ["restaurant booking", "reservation", "table", "dining", "cancel", "lobby lounge"]
+    },
+    {
+      "id": "events-conference",
+      "category": "Events",
+      "title": "Conference & Meeting Facilities",
+      "content": "The Meridian Conference Center on floors 2-3 offers 8 meeting rooms and a grand ballroom accommodating up to 500 guests. AV equipment, high-speed Wi-Fi, and dedicated event coordinators included. Event inquiries: events@grandmeridian.com or +1 (555) 234-8930. Catering packages available. Business center open 24/7 on the ground floor.",
+      "keywords": ["events", "conference", "meeting", "ballroom", "corporate", "catering"]
+    },
+    {
+      "id": "events-social",
+      "category": "Events",
+      "title": "Social Events & Weddings",
+      "content": "Grand Meridian hosts weddings, galas, and private celebrations. The Ocean Terrace accommodates up to 200 guests for ceremonies and receptions. Dedicated wedding planner assigned to each booking. Packages start at $15,000. Site visits available by appointment. Contact events@grandmeridian.com for proposals and availability.",
+      "keywords": ["wedding", "social events", "celebration", "terrace", "planner", "party"]
+    },
+    {
+      "id": "medical-assistance",
+      "category": "Medical Assistance",
+      "title": "Medical Assistance Information",
+      "content": "For medical emergencies, dial 911 or contact front desk (dial 0). The hotel keeps a first-aid kit at the front desk and with security. Nearest hospital: Marina Bay General Hospital, 1.2 miles away (5-minute drive). Hotel can arrange taxi or ambulance transport. On-call physician service available 24/7 through concierge ($150 consultation fee, may be billable to room). Basic over-the-counter medications available at front desk. The hotel staff are not licensed medical professionals and cannot provide medical diagnosis or treatment.",
+      "keywords": ["medical", "doctor", "hospital", "emergency", "first aid", "health", "physician"]
+    },
+    {
+      "id": "careers",
+      "category": "Careers",
+      "title": "Careers at Grand Meridian",
+      "content": "Grand Meridian Hotel is always seeking talented hospitality professionals. Current openings include front desk associates, sous chefs, spa therapists, and guest relations managers. Apply at careers.grandmeridian.com or email hr@grandmeridian.com. Benefits include competitive salary, health insurance, employee dining, and career development programs. Internship programs available for hospitality students.",
+      "keywords": ["careers", "jobs", "employment", "hiring", "apply", "HR"]
+    },
+    {
+      "id": "guest-support",
+      "category": "Guest Support",
+      "title": "Guest Support Services",
+      "content": "Our guest support team is available 24/7 via front desk, in-room phone (dial 0), or the hotel mobile app live chat. Services include wake-up calls, laundry and dry cleaning (same-day before 9:00 AM), luggage storage, currency exchange at front desk, translation assistance, and local activity recommendations. Average response time for non-urgent requests is under 15 minutes.",
+      "keywords": ["guest support", "help", "assistance", "laundry", "wake up", "concierge"]
+    },
+    {
+      "id": "chatbot-capabilities",
+      "category": "Chatbot Limitations",
+      "title": "AI Assistant Capabilities & Limitations",
+      "content": "This AI assistant (Meridian) answers questions about hotel information, meal schedules, room types, general availability info, wellness, restaurants, events, contact details, pool, gym, sauna, and medical assistance. It greets guests and supports Arabic, English, Spanish, French, and German. It CANNOT make reservations, confirm real-time vacant rooms, process payments, or access guest account data. For bookings and live availability, contact front desk (+1 555-234-8900) or reservations@grandmeridian.com.",
+      "keywords": ["chatbot", "AI", "limitations", "capabilities", "what can you do", "help", "حجز", "booking"]
+    },
+    {
+      "id": "multilingual",
+      "category": "Hotel Information",
+      "title": "Multilingual Support",
+      "content": "Grand Meridian Hotel staff speak English, Spanish, French, Mandarin, Japanese, and Arabic. The AI assistant Meridian supports conversations in English, Arabic, Spanish, French, German, and Mandarin — always responding in the guest's language. For other languages, live interpreter service is available through concierge.",
+      "keywords": ["multilingual", "language", "translation", "interpreter", "international", "arabic", "english", "لغة", "عربي", "ترجمة"]
+    }
+  ]
+}
