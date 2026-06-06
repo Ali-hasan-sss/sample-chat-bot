@@ -7,6 +7,7 @@ import {
   REPLY_LANGUAGE_OPTIONS,
   type ReplyLanguage,
 } from "@/lib/reply-language";
+import { LanguageFlag } from "./LanguageFlag";
 
 interface MessageTranslateMenuProps {
   activeLanguage: ReplyLanguage | null;
@@ -100,7 +101,7 @@ export const MessageTranslateMenu = memo(function MessageTranslateMenu({
                 disabled={isLoading}
                 onClick={() => handleSelect(option.code)}
                 className={cn(
-                  "flex h-7 w-7 items-center justify-center rounded-full text-sm leading-none",
+                  "flex h-7 w-7 items-center justify-center rounded-full p-0.5",
                   "transition-all disabled:opacity-50",
                   selected
                     ? "bg-primary/25 shadow-md shadow-primary/25"
@@ -110,7 +111,7 @@ export const MessageTranslateMenu = memo(function MessageTranslateMenu({
                 {loading ? (
                   <Loader2 className="h-3 w-3 animate-spin" />
                 ) : (
-                  <span aria-hidden>{option.flag}</span>
+                  <LanguageFlag language={option.code} size={18} />
                 )}
               </button>
             );

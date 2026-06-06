@@ -6,6 +6,7 @@ import {
   REPLY_LANGUAGE_OPTIONS,
   type ReplyLanguage,
 } from "@/lib/reply-language";
+import { LanguageFlag } from "./LanguageFlag";
 
 interface LanguageSelectorProps {
   value: ReplyLanguage;
@@ -37,14 +38,14 @@ export const LanguageSelector = memo(function LanguageSelector({
             disabled={disabled}
             onClick={() => onChange(option.code)}
             className={cn(
-              "flex h-8 w-8 items-center justify-center rounded-full text-base leading-none",
+              "flex h-8 w-8 items-center justify-center rounded-full p-0.5",
               "transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed",
               selected
                 ? "bg-primary/25 shadow-lg shadow-primary/30 scale-105"
                 : "bg-white/10 shadow-md shadow-black/15 hover:bg-white/15 hover:shadow-lg"
             )}
           >
-            <span aria-hidden>{option.flag}</span>
+            <LanguageFlag language={option.code} size={22} />
           </button>
         );
       })}
