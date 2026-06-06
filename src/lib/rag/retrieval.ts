@@ -1,10 +1,14 @@
 import { chunkKnowledgeBase } from "./chunking";
 import { buildVocabulary, cosineSimilarity, textToVector } from "./embeddings";
 import type { KnowledgeChunk, RetrievedChunk } from "@/types/knowledge";
+import knowledgeBase from "@/data/knowledge-base.json";
 
-const TOP_K = 4;
-const MIN_SCORE = 0.05;
-const MAX_CONTEXT_CHARS = 3000;
+const TOP_K = 6;
+const MIN_SCORE = 0.04;
+const MAX_CONTEXT_CHARS = 4500;
+const KB_VERSION = knowledgeBase.entries.length;
+
+let cachedVersion: number | null = null;
 
 let cachedChunks: KnowledgeChunk[] | null = null;
 let cachedVocabulary: string[] | null = null;
@@ -15,7 +19,13 @@ function getIndexedChunks(): {
   vocabulary: string[];
   vectors: Map<string, number[]>;
 } {
-  if (!cachedChunks || !cachedVocabulary || !cachedVectors) {
+  if (
+    !cachedChunks ||
+    !cachedVocabulary ||
+    !cachedVectors ||
+    cachedVersion !== KB_VERSION
+  ) {
+    cachedVersion = KB_VERSION;
     cachedChunks = chunkKnowledgeBase();
     const allTexts = cachedChunks.map(
       (c) => `${c.title} ${c.category} ${c.content} ${c.keywords.join(" ")}`

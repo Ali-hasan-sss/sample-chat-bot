@@ -4,8 +4,8 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import type { ChatConversation } from "@/types/chat";
 
 const DB_NAME = "meridian-chat";
-const DB_VERSION = 1;
-const STORE_NAME = "conversations";
+const DB_VERSION = 2;
+const CONVERSATION_STORE = "conversations";
 const CONVERSATION_KEY = "current";
 
 function openDB(): Promise<IDBDatabase> {
@@ -14,8 +14,11 @@ function openDB(): Promise<IDBDatabase> {
 
     request.onupgradeneeded = () => {
       const db = request.result;
-      if (!db.objectStoreNames.contains(STORE_NAME)) {
-        db.createObjectStore(STORE_NAME);
+      if (!db.objectStoreNames.contains(CONVERSATION_STORE)) {
+        db.createObjectStore(CONVERSATION_STORE);
+      }
+      if (!db.objectStoreNames.contains("audio-blobs")) {
+        db.createObjectStore("audio-blobs");
       }
     };
 
@@ -40,9 +43,8 @@ export function useChatPersistence() {
         if (!mounted) return;
         dbRef.current = db;
 
-        const tx = db.transaction(STORE_NAME, "readonly");
-        const store = tx.objectStore(STORE_NAME);
-        const request = store.get(CONVERSATION_KEY);
+        const tx = db.transaction(CONVERSATION_STORE, "readonly");
+        const request = tx.objectStore(CONVERSATION_STORE).get(CONVERSATION_KEY);
 
         request.onsuccess = () => {
           if (mounted && request.result) {
@@ -67,28 +69,25 @@ export function useChatPersistence() {
     };
   }, []);
 
-  const saveConversation = useCallback(
-    async (conv: ChatConversation) => {
-      setConversation(conv);
-      try {
-        const db = dbRef.current ?? (await openDB());
-        dbRef.current = db;
-        const tx = db.transaction(STORE_NAME, "readwrite");
-        tx.objectStore(STORE_NAME).put(conv, CONVERSATION_KEY);
-      } catch {
-        // IndexedDB unavailable — state still held in memory
-      }
-    },
-    []
-  );
+  const saveConversation = useCallback(async (conv: ChatConversation) => {
+    setConversation(conv);
+    try {
+      const db = dbRef.current ?? (await openDB());
+      dbRef.current = db;
+      const tx = db.transaction(CONVERSATION_STORE, "readwrite");
+      tx.objectStore(CONVERSATION_STORE).put(conv, CONVERSATION_KEY);
+    } catch {
+      // silent fail
+    }
+  }, []);
 
   const clearConversation = useCallback(async () => {
     setConversation(null);
     try {
       const db = dbRef.current ?? (await openDB());
       dbRef.current = db;
-      const tx = db.transaction(STORE_NAME, "readwrite");
-      tx.objectStore(STORE_NAME).delete(CONVERSATION_KEY);
+      const tx = db.transaction(CONVERSATION_STORE, "readwrite");
+      tx.objectStore(CONVERSATION_STORE).delete(CONVERSATION_KEY);
     } catch {
       // silent fail
     }

@@ -8,11 +8,39 @@
       "keywords": ["who are you", "hello", "hi", "assistant", "bot", "chatbot", "help", "مرحبا", "من انت", "مساعد", "ترحيب", "welcome", "identity"]
     },
     {
+      "id": "operating-hours-24-7",
+      "category": "Operating Hours",
+      "title": "Hotel Operating Hours — 24/7 Services",
+      "content": "Grand Meridian Hotel operates core guest services 24 hours a day, 7 days a week, 365 days a year. ALWAYS OPEN (24/7): Front Desk & Reception, Guest Support (dial 0), Security, In-Room Dining, Fitness Center (gym), Business Center, Valet Parking, Luggage Storage, Concierge emergency line, and AI Assistant. Front Desk phone: +1 (555) 234-8900 — available around the clock. Guest support average response time under 15 minutes at any hour. Limited-hour facilities: Sunrise Terrace breakfast 6:30–10:30 AM daily; Azure Restaurant lunch 12:00–2:30 PM & dinner 6:00–10:30 PM (Tue–Sun, closed Mon); Wellness & Spa 6:00 AM–10:00 PM; Rooftop Pool 7:00 AM–9:00 PM; Lobby Lounge 11:00 AM–midnight. Housekeeping visits rooms 9:00 AM–4:00 PM daily.",
+      "keywords": ["operating hours", "working hours", "open", "closed", "24/7", "24 hours", "around the clock", "ساعات العمل", "ساعات الدوام", "مواعيد العمل", "متى تفتح", "متى تغلق", "مفتوح", "على مدار الساعة", "طوال اليوم", "استقبال", "دوام", "hours", "schedule", "time", "horaires", "öffnungszeiten"]
+    },
+    {
+      "id": "daily-specials-program",
+      "category": "Dining & Meals",
+      "title": "Daily Dish of the Day Program",
+      "content": "Chef's Daily Special at Azure Restaurant (12th floor) — changes every day. MONDAY (restaurant closed, special at Lobby Lounge): Grilled Sea Bass with lemon herb butter, roasted vegetables, saffron rice. TUESDAY Lunch: Lamb Tagine with apricots and almonds. Tuesday Dinner: Pan-seared Scallops with cauliflower purée. WEDNESDAY Lunch: Mediterranean Mezze Platter for two. Wednesday Dinner: Wagyu Beef Tenderloin with truffle jus. THURSDAY Lunch: Fresh Pasta of the Day (handmade). Thursday Dinner: Whole Roasted Branzino with capers and olives. FRIDAY Lunch: Friday Feast — Mixed Grill (lamb, chicken, kofta) with Arabic bread. Friday Dinner: Lobster Thermidor. SATURDAY Lunch: Chef's Seafood Paella. Saturday Dinner: Dry-aged Ribeye with bone marrow butter. SUNDAY Lunch: Slow-roasted Lamb Shoulder. Sunday Dinner: Chef's Tasting Menu (5 courses, reservation required). Daily soup and dessert specials also available — ask your server. Vegetarian and gluten-free alternatives available daily.",
+      "keywords": ["dish of the day", "daily special", "chef special", "today's menu", "special menu", "طبق اليوم", "الطبق اليومي", "برنامج الطبق", "وجبة اليوم", "ماذا يوجد اليوم", "special du jour", "menu today", "daily menu", "specials"]
+    },
+    {
+      "id": "breakfast-menu-detail",
+      "category": "Dining & Meals",
+      "title": "Breakfast Menu — Full Details",
+      "content": "Sunrise Terrace Buffet (ground floor, east wing) — Daily 6:30–10:30 AM (weekends until 11:00 AM). HOT STATIONS: Eggs Benedict, Omelette Station (custom), Pancakes & Waffles, Arabic Shakshuka, Grilled Halloumi, Beef Bacon & Chicken Sausages, Baked Beans, Sautéed Mushrooms. COLD SELECTION: Smoked Salmon, Assorted Cheeses (Brie, Cheddar, Feta), Charcuterie, Fresh Fruits & Berries, Greek Yogurt with Honey & Granola, Overnight Oats. ARABIC CORNER: Hummus, Mutabal, Labneh, Olives, Falafel, Fresh Arabic Bread (baked on-site), Dates & Arabic Coffee. BAKERY: Croissants, Pain au Chocolat, Muffins, Danish Pastries, Sourdough Toast. BEVERAGES: Espresso, Cappuccino, Latte, Fresh Juices (orange, apple, watermelon), Herbal Teas. Children's corner with cereals and mini pancakes. All buffet items included in room rate for guests on breakfast-inclusive plans.",
+      "keywords": ["breakfast menu", "breakfast items", "buffet breakfast", "فطور", "منيو الفطور", "قائمة الفطور", "إفطار", "morning food", "brunch"]
+    },
+    {
+      "id": "lunch-dinner-menu-detail",
+      "category": "Dining & Meals",
+      "title": "Lunch & Dinner Menus — Azure & Lobby Lounge",
+      "content": "AZURE RESTAURANT (12th floor, Mediterranean fine dining): STARTERS — Burrata with heirloom tomatoes, Tuna Tartare, French Onion Soup, Arabic Mezze Selection. MAINS — Grilled Octopus, Lobster Risotto, Chicken Tagine, Vegetable Moussaka, Grilled Lamb Chops, Pan-fried Sea Bream. DESSERTS — Baklava Cheesecake, Tiramisu, Seasonal Fruit Sorbet, Chocolate Fondant. LOBBY LOUNGE (all day 11:00 AM–midnight): Club Sandwich, Caesar Salad, Wagyu Burger, Margherita Pizza, Fish & Chips, Arabic Mixed Grill Plate, Truffle Fries. IN-ROOM DINING (24/7): Full menu including Arabic, Asian, Western — Club Sandwich, Chicken Biryani, Pasta Carbonara, Arabic Breakfast Platter, Kids Menu (chicken nuggets, pasta, fruit plate). Dietary: vegetarian, vegan, gluten-free, halal, and allergy-friendly options available — inform staff when ordering.",
+      "keywords": ["lunch menu", "dinner menu", "food menu", "restaurant menu", "what to eat", "قائمة الطعام", "منيو", "غداء", "عشاء", "أطباق", "menu", "dishes", "plat du jour"]
+    },
+    {
       "id": "meals-breakfast",
       "category": "Dining & Meals",
       "title": "Breakfast",
-      "content": "Breakfast is served daily at The Sunrise Terrace (ground floor, east wing). Hours: 6:30 AM – 10:30 AM (weekdays), 6:30 AM – 11:00 AM (weekends). Buffet includes international hot dishes, fresh pastries, fruits, eggs made to order, Arabic mezze station, and specialty coffee. Executive Lounge guests (26th floor) enjoy complimentary continental breakfast 7:00 AM – 10:00 AM. In-room breakfast delivery available 7:00 AM – 11:00 AM (order via in-room tablet or dial 0).",
-      "keywords": ["breakfast", "morning meal", "buffet", "فطور", "وجبة الصباح", "إفطار", "meal", "food", "dining hours"]
+      "content": "Breakfast is served daily at The Sunrise Terrace (ground floor, east wing). Hours: 6:30 AM – 10:30 AM (weekdays), 6:30 AM – 11:00 AM (weekends and public holidays). International buffet with Arabic corner, egg station, fresh bakery, smoked salmon, and specialty coffee. Executive Lounge guests (26th floor) enjoy complimentary continental breakfast 7:00 AM – 10:00 AM. In-room breakfast delivery available 24/7 (full breakfast menu, delivery 7:00 AM – 11:00 AM for buffet items — order via in-room tablet or dial 0).",
+      "keywords": ["breakfast", "morning meal", "buffet", "فطور", "وجبة الصباح", "إفطار", "meal", "food", "dining hours", "morning"]
     },
     {
       "id": "meals-lunch-dinner",
@@ -46,8 +74,8 @@
       "id": "hotel-overview",
       "category": "Hotel Information",
       "title": "Grand Meridian Hotel Overview",
-      "content": "Grand Meridian Hotel is a five-star luxury hospitality destination located at 42 Oceanview Boulevard, Marina Bay. The hotel features 312 elegantly appointed rooms and suites across 28 floors. Check-in time is 3:00 PM and check-out time is 11:00 AM. Early check-in and late check-out may be available upon request, subject to availability. The hotel offers complimentary high-speed Wi-Fi throughout the property, 24-hour concierge service, valet parking, and a business center. Our mission is to deliver exceptional guest experiences through personalized service and world-class amenities.",
-      "keywords": ["hotel", "overview", "check-in", "check-out", "location", "address", "wifi", "concierge", "parking"]
+      "content": "Grand Meridian Hotel is a five-star luxury destination at 42 Oceanview Boulevard, Marina Bay. 312 rooms and suites across 28 floors with panoramic ocean views. Check-in 3:00 PM, check-out 11:00 AM (early/late available on request). Complimentary high-speed Wi-Fi, 24/7 front desk and concierge, valet parking ($35/night), EV charging stations, business center (24/7), kids welcome program, pet-friendly rooms (limited, $50/night). Currency exchange, ATM, and luxury retail boutiques on ground floor. Airport shuttle on request ($45 one-way). Free parking for electric vehicles. Hotel star rating: 5 stars. Total staff: 450+ multilingual professionals.",
+      "keywords": ["hotel", "overview", "check-in", "check-out", "location", "address", "wifi", "concierge", "parking", "about hotel", "معلومات الفندق", "عن الفندق", "تفاصيل", "facilities", "services"]
     },
     {
       "id": "hotel-contact",

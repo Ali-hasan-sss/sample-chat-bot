@@ -3,21 +3,46 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import type { ChatMessage, ChatConversation } from "@/types/chat";
 import { useChatPersistence } from "@/hooks/useChatPersistence";
-import { sendChatMessage, createMessage } from "@/services/chat-service";
+import {
+  sendChatMessage,
+  sendVoiceMessage,
+  createTextMessage,
+  createAudioMessage,
+  buildHistoryFromMessages,
+  serializeMessagesForStorage,
+} from "@/services/chat-service";
+import {
+  saveAudioBlob,
+  getAudioBlob,
+  createAudioObjectUrl,
+  deleteAllAudioBlobs,
+} from "@/lib/audio-storage";
 import { generateId } from "@/lib/utils";
 
 export const QUICK_SUGGESTIONS = [
-  "What are the meal times?",
+  "What are your operating hours?",
+  "What is today's dish of the day?",
+  "Breakfast & meal schedule",
   "Are there available rooms?",
-  "What wellness facilities exist?",
-  "Hotel contact details",
-  "Does the hotel have a pool?",
-  "مواعيد الوجبات",
-  "الغرف المتاحة",
-  "معلومات الفندق",
+  "Hotel services & facilities",
+
 ] as const;
 
 type ChatStatus = "idle" | "loading" | "error";
+
+async function hydrateAudioMessages(messages: ChatMessage[]): Promise<ChatMessage[]> {
+  return Promise.all(
+    messages.map(async (msg) => {
+      if (msg.type === "audio" && msg.audioId && !msg.audioUrl) {
+        const blob = await getAudioBlob(msg.audioId);
+        if (blob) {
+          return { ...msg, audioUrl: createAudioObjectUrl(blob) };
+        }
+      }
+      return msg;
+    })
+  );
+}
 
 export function useChat() {
   const { conversation, isLoaded, saveConversation, clearConversation } =
@@ -30,7 +55,7 @@ export function useChat() {
 
   useEffect(() => {
     if (isLoaded && conversation && !initializedRef.current) {
-      setMessages(conversation.messages);
+      hydrateAudioMessages(conversation.messages).then(setMessages);
       conversationIdRef.current = conversation.id;
       initializedRef.current = true;
     } else if (isLoaded && !conversation && !initializedRef.current) {
@@ -43,7 +68,7 @@ export function useChat() {
     (updatedMessages: ChatMessage[]) => {
       const conv: ChatConversation = {
         id: conversationIdRef.current,
-        messages: updatedMessages,
+        messages: serializeMessagesForStorage(updatedMessages),
         createdAt: conversation?.createdAt ?? Date.now(),
         updatedAt: Date.now(),
       };
@@ -57,18 +82,14 @@ export function useChat() {
       const trimmed = content.trim();
       if (!trimmed || status === "loading") return;
 
-      const userMessage = createMessage("user", trimmed);
+      const userMessage = createTextMessage("user", trimmed);
       const updatedWithUser = [...messages, userMessage];
       setMessages(updatedWithUser);
       setStatus("loading");
       setError(null);
 
       try {
-        const history = messages.slice(-10).map((m) => ({
-          role: m.role,
-          content: m.content,
-        }));
-
+        const history = buildHistoryFromMessages(messages);
         const response = await sendChatMessage(
           trimmed,
           conversationIdRef.current,
@@ -76,7 +97,7 @@ export function useChat() {
         );
 
         conversationIdRef.current = response.conversationId;
-        const assistantMessage = createMessage("assistant", response.message);
+        const assistantMessage = createTextMessage("assistant", response.message);
         const finalMessages = [...updatedWithUser, assistantMessage];
         setMessages(finalMessages);
         persist(finalMessages);
@@ -91,12 +112,67 @@ export function useChat() {
     [messages, status, persist]
   );
 
+  const sendVoiceMessageHandler = useCallback(
+    async (audio: Blob, duration: number) => {
+      if (status === "loading") return;
+
+      const audioId = generateId();
+      const audioUrl = createAudioObjectUrl(audio);
+      const userMessage = createAudioMessage(audioId, audioUrl, duration);
+
+      const updatedWithUser = [...messages, userMessage];
+      setMessages(updatedWithUser);
+      setStatus("loading");
+      setError(null);
+
+      try {
+        await saveAudioBlob(audioId, audio);
+
+        const history = buildHistoryFromMessages(messages);
+        const response = await sendVoiceMessage(
+          audio,
+          conversationIdRef.current,
+          history
+        );
+
+        conversationIdRef.current = response.conversationId;
+
+        const userMessageWithTranscript: ChatMessage = {
+          ...userMessage,
+          content: response.transcript ?? "",
+          transcript: response.transcript,
+        };
+
+        const withTranscript = updatedWithUser.map((m) =>
+          m.id === userMessage.id ? userMessageWithTranscript : m
+        );
+
+        const assistantMessage: ChatMessage = {
+          ...createTextMessage("assistant", response.message),
+          replyWithVoice: true,
+        };
+        const finalMessages = [...withTranscript, assistantMessage];
+        setMessages(finalMessages);
+        persist(finalMessages);
+        setStatus("idle");
+      } catch (err) {
+        setMessages(messages);
+        setStatus("error");
+        setError(
+          err instanceof Error ? err.message : "Could not send voice message."
+        );
+      }
+    },
+    [messages, status, persist]
+  );
+
   const handleClear = useCallback(async () => {
     conversationIdRef.current = generateId();
     setMessages([]);
     setStatus("idle");
     setError(null);
     await clearConversation();
+    await deleteAllAudioBlobs();
   }, [clearConversation]);
 
   return {
@@ -105,6 +181,7 @@ export function useChat() {
     error,
     isLoaded,
     sendMessage,
+    sendVoiceMessage: sendVoiceMessageHandler,
     clearConversation: handleClear,
   };
 }

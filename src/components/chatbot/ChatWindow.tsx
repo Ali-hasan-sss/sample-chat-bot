@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, memo } from "react";
+import { useRef, useEffect, useCallback, memo } from "react";
 import { Trash2, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,10 +10,11 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { ChatMessageBubble } from "./ChatMessage";
-import { ChatInput } from "./ChatInput";
+import { ChatInput, type ChatInputHandle } from "./ChatInput";
 import { TypingIndicator } from "./TypingIndicator";
 import { QuickSuggestions } from "./QuickSuggestions";
 import { useChat, QUICK_SUGGESTIONS } from "@/features/chat/useChat";
+import { useAiSpeech } from "@/hooks/useAiSpeech";
 
 interface ChatWindowProps {
   open: boolean;
@@ -24,15 +25,55 @@ export const ChatWindow = memo(function ChatWindow({
   open,
   onOpenChange,
 }: ChatWindowProps) {
-  const { messages, status, error, sendMessage, clearConversation, isLoaded } =
+  const { messages, status, error, sendMessage, sendVoiceMessage, clearConversation, isLoaded } =
     useChat();
+  const { supported: ttsSupported, speakingId, loadingId, speak } =
+    useAiSpeech();
   const scrollRef = useRef<HTMLDivElement>(null);
+  const bottomRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<ChatInputHandle>(null);
+  const autoSpokenRef = useRef<Set<string>>(new Set());
+
+  const scrollToBottom = useCallback((instant = false) => {
+    requestAnimationFrame(() => {
+      bottomRef.current?.scrollIntoView({
+        behavior: instant ? "instant" : "smooth",
+        block: "end",
+      });
+    });
+  }, []);
 
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    if (!open || !isLoaded) return;
+    scrollToBottom(true);
+  }, [open, isLoaded, messages, status, scrollToBottom]);
+
+  useEffect(() => {
+    if (open && isLoaded && status === "idle") {
+      inputRef.current?.focus();
     }
-  }, [messages, status]);
+  }, [open, isLoaded, status]);
+
+  useEffect(() => {
+    if (status !== "idle" || messages.length < 2) return;
+
+    const last = messages[messages.length - 1];
+    if (last.role !== "assistant" || !last.replyWithVoice) return;
+    if (autoSpokenRef.current.has(last.id)) return;
+
+    autoSpokenRef.current.add(last.id);
+    speak(last.content, last.id);
+  }, [messages, status, speak]);
+
+  const handleQuickSuggestion = useCallback(
+    (text: string) => {
+      sendMessage(text);
+      inputRef.current?.focus();
+    },
+    [sendMessage]
+  );
+
+  const isLoading = status === "loading";
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -54,7 +95,10 @@ export const ChatWindow = memo(function ChatWindow({
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={clearConversation}
+                onClick={() => {
+                  autoSpokenRef.current.clear();
+                  clearConversation();
+                }}
                 aria-label="Clear conversation"
                 className="h-8 w-8"
               >
@@ -64,7 +108,10 @@ export const ChatWindow = memo(function ChatWindow({
           </div>
         </SheetHeader>
 
-        <div ref={scrollRef} className="flex-1 overflow-y-auto py-4 space-y-1">
+        <div
+          ref={scrollRef}
+          className="flex-1 overflow-y-auto py-4 space-y-1 scrollbar-none"
+        >
           {!isLoaded ? (
             <div className="flex items-center justify-center h-32 text-sm text-muted-foreground">
               Loading conversation...
@@ -78,35 +125,56 @@ export const ChatWindow = memo(function ChatWindow({
                 مرحباً بك في فندق Grand Meridian
               </p>
               <p className="text-xs text-muted-foreground/70">
-                Ask about meals, rooms, wellness, or hotel services — in any language.
+                Speak with the mic — your words appear as text and the assistant
+                replies with AI voice.
+              </p>
+              <p className="text-xs text-muted-foreground/70 mt-1">
+                تحدّث بالميكrophone — يُحوَّل صوتك لنص ويردّ المساعد بصوت ذكاء
+                اصطناعي.
               </p>
             </div>
           ) : (
             messages.map((msg) => (
-              <ChatMessageBubble key={msg.id} message={msg} />
+              <ChatMessageBubble
+                key={msg.id}
+                message={msg}
+                speak={speak}
+                isSpeaking={speakingId === msg.id}
+                isLoadingVoice={loadingId === msg.id}
+                ttsSupported={ttsSupported}
+              />
             ))
           )}
 
-          {status === "loading" && <TypingIndicator />}
+          {isLoading && (
+            <div className="px-4 py-2">
+              <TypingIndicator />
+            </div>
+          )}
 
           {error && (
             <div className="mx-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
               {error}
             </div>
           )}
+
+          <div ref={bottomRef} aria-hidden className="h-px shrink-0" />
         </div>
 
         {isLoaded && (
           <QuickSuggestions
             suggestions={QUICK_SUGGESTIONS}
-            onSelect={sendMessage}
-            disabled={status === "loading"}
+            onSelect={handleQuickSuggestion}
+            disabled={isLoading}
           />
         )}
 
         <ChatInput
+          ref={inputRef}
           onSend={sendMessage}
-          disabled={status === "loading" || !isLoaded}
+          onVoiceMessage={sendVoiceMessage}
+          disabled={isLoading || !isLoaded}
+          isSending={isLoading}
         />
       </SheetContent>
     </Sheet>
