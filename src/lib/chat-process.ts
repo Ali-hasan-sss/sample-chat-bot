@@ -13,19 +13,21 @@ import {
   type ChatHistoryItem,
 } from "@/lib/openai";
 import { BASE_ASSISTANT_CONTEXT } from "@/lib/conversation";
+import type { ReplyLanguage } from "@/lib/reply-language";
 
 export async function processChatMessage(
   rawMessage: string,
-  history: ChatHistoryItem[] = []
+  history: ChatHistoryItem[] = [],
+  replyLanguage?: ReplyLanguage
 ): Promise<string> {
   const sanitized = sanitizeUserInput(rawMessage);
 
   if (!sanitized) {
-    return await generateFallbackResponse();
+    return await generateFallbackResponse(undefined, replyLanguage);
   }
 
   if (detectPromptInjection(sanitized)) {
-    return await generateFallbackResponse(sanitized);
+    return await generateFallbackResponse(sanitized, replyLanguage);
   }
 
   const chunks = retrieveRelevantChunks(sanitized);
@@ -40,7 +42,8 @@ export async function processChatMessage(
   return generateChatResponse(
     safeMessage,
     context || BASE_ASSISTANT_CONTEXT,
-    safeHistory
+    safeHistory,
+    replyLanguage
   );
 }
 

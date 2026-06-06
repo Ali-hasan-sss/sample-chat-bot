@@ -15,7 +15,8 @@ import { cn } from "@/lib/utils";
 import { useVoiceInput } from "@/hooks/useVoiceInput";
 
 export interface ChatInputHandle {
-  focus: () => void;
+  /** Only refocus if the user had already focused the input */
+  refocusIfEngaged: () => void;
 }
 
 interface ChatInputProps {
@@ -40,14 +41,21 @@ export const ChatInput = memo(
     const micRef = useRef<HTMLButtonElement>(null);
     const pointerStartRef = useRef({ x: 0, y: 0 });
     const holdingRef = useRef(false);
+    const userEngagedRef = useRef(false);
+
+    const refocusIfEngaged = useCallback(() => {
+      if (!userEngagedRef.current || !textareaRef.current) return;
+      textareaRef.current.focus({ preventScroll: true });
+    }, []);
 
     useImperativeHandle(ref, () => ({
-      focus: () => textareaRef.current?.focus(),
+      refocusIfEngaged,
     }));
 
     const handleVoiceMessage = useCallback(
       (blob: Blob, duration: number) => {
         setVoiceError(null);
+        userEngagedRef.current = false;
         onVoiceMessage(blob, duration);
       },
       [onVoiceMessage]
@@ -67,22 +75,21 @@ export const ChatInput = memo(
       onError: setVoiceError,
     });
 
-    const refocusInput = useCallback(() => {
-      requestAnimationFrame(() => {
-        textareaRef.current?.focus();
-      });
-    }, []);
-
     const handleSubmit = useCallback(() => {
       const trimmed = value.trim();
       if (!trimmed || disabled || isSending) return;
+      const shouldKeepFocus = userEngagedRef.current;
       onSend(trimmed);
       setValue("");
       if (textareaRef.current) {
         textareaRef.current.style.height = "auto";
       }
-      refocusInput();
-    }, [value, disabled, isSending, onSend, refocusInput]);
+      if (shouldKeepFocus) {
+        requestAnimationFrame(() => {
+          textareaRef.current?.focus({ preventScroll: true });
+        });
+      }
+    }, [value, disabled, isSending, onSend]);
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
       if (e.key === "Enter" && !e.shiftKey) {
@@ -101,11 +108,13 @@ export const ChatInput = memo(
       (e: React.PointerEvent<HTMLButtonElement>) => {
         if (disabled || isSending || isProcessing || isBusy) return;
         e.preventDefault();
+        userEngagedRef.current = false;
         holdingRef.current = true;
         setIsHolding(true);
         setIsCancelActive(false);
         pointerStartRef.current = { x: e.clientX, y: e.clientY };
         micRef.current?.setPointerCapture(e.pointerId);
+        textareaRef.current?.blur();
         beginRecording();
       },
       [disabled, isSending, isProcessing, isBusy, beginRecording]
@@ -147,6 +156,10 @@ export const ChatInput = memo(
       [cancelRecording, resetHoldState]
     );
 
+    const preventBlur = useCallback((e: React.MouseEvent | React.PointerEvent) => {
+      e.preventDefault();
+    }, []);
+
     useEffect(() => {
       const el = textareaRef.current;
       if (el) {
@@ -156,13 +169,13 @@ export const ChatInput = memo(
     }, [value]);
 
     const showRecordUi = isHolding || isRecording;
-    const inputDisabled = disabled || isBusy || isSending || isProcessing;
+    const textareaLocked = disabled || isBusy || isProcessing || showRecordUi;
 
     return (
-      <div className="relative border-t border-white/10 p-4">
+      <div className="relative p-4 pt-2 bg-gradient-to-t from-background via-background/95 to-transparent">
         {showRecordUi && (
           <div className="absolute inset-x-0 bottom-full mb-1 px-4 pb-2 pointer-events-none">
-            <div className="flex items-center justify-between rounded-xl border border-white/10 bg-background/95 backdrop-blur-md px-4 py-3 shadow-lg">
+            <div className="flex items-center justify-between rounded-2xl bg-background/95 backdrop-blur-md px-4 py-3 shadow-xl shadow-black/30">
               <div
                 className={cn(
                   "flex items-center gap-2 transition-all duration-150",
@@ -189,21 +202,33 @@ export const ChatInput = memo(
           <p className="mb-2 text-xs text-red-400 px-1">{voiceError}</p>
         )}
 
-        <div className="flex items-end gap-2">
+        <div className="flex items-end gap-2 rounded-2xl bg-white/[0.05] p-2 shadow-lg shadow-black/20">
           <textarea
             ref={textareaRef}
             value={value}
             onChange={(e) => setValue(e.target.value)}
+            onFocus={() => {
+              userEngagedRef.current = true;
+            }}
+            onBlur={() => {
+              if (!isSending && !showRecordUi) {
+                userEngagedRef.current = false;
+              }
+            }}
             onKeyDown={handleKeyDown}
             placeholder="Type a message or hold mic..."
-            disabled={inputDisabled || showRecordUi}
+            readOnly={isSending}
+            disabled={textareaLocked}
             rows={1}
+            enterKeyHint="send"
             className={cn(
-              "flex-1 resize-none rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm",
-              "placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50",
+              "flex-1 resize-none rounded-xl bg-white/[0.06] px-4 py-2.5 text-sm",
+              "placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30",
               "disabled:opacity-50 disabled:cursor-not-allowed max-h-[120px]",
-              "overflow-y-auto scrollbar-none",
-              showRecordUi && "border-primary/40 ring-1 ring-primary/30"
+              "overflow-y-auto scrollbar-none transition-all duration-200",
+              "shadow-inner shadow-black/10",
+              isSending && "opacity-80",
+              showRecordUi && "ring-2 ring-primary/25 shadow-md shadow-primary/10"
             )}
           />
           {supported && (
@@ -231,8 +256,16 @@ export const ChatInput = memo(
           <Button
             size="icon"
             onClick={handleSubmit}
-            disabled={inputDisabled || showRecordUi || !value.trim()}
+            onMouseDown={preventBlur}
+            onPointerDown={preventBlur}
+            disabled={disabled || isSending || showRecordUi || isBusy || !value.trim()}
             aria-label="Send message"
+            className={cn(
+              value.trim() &&
+                !disabled &&
+                !isSending &&
+                "shadow-lg shadow-primary/30"
+            )}
           >
             <Send className="h-4 w-4" />
           </Button>

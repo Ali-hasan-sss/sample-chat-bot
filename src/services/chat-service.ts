@@ -5,18 +5,20 @@ import type {
   ChatErrorResponse,
   ChatHistoryItem,
 } from "@/types/chat";
+import type { ReplyLanguage } from "@/lib/reply-language";
 import { messageToHistoryContent } from "@/lib/chat-process";
 import { generateId } from "@/lib/utils";
 
 export async function sendChatMessage(
   message: string,
   conversationId?: string,
-  history?: ChatHistoryItem[]
+  history?: ChatHistoryItem[],
+  replyLanguage?: ReplyLanguage
 ): Promise<ChatResponse> {
   const response = await fetch("/api/chat", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message, conversationId, history }),
+    body: JSON.stringify({ message, conversationId, history, replyLanguage }),
   });
 
   const data = await response.json();
@@ -32,13 +34,15 @@ export async function sendChatMessage(
 export async function sendVoiceMessage(
   audio: Blob,
   conversationId?: string,
-  history?: ChatHistoryItem[]
+  history?: ChatHistoryItem[],
+  replyLanguage?: ReplyLanguage
 ): Promise<VoiceChatResponse> {
   const formData = new FormData();
   const ext = audio.type.includes("mp4") ? "mp4" : "webm";
   formData.append("audio", audio, `voice.${ext}`);
   if (conversationId) formData.append("conversationId", conversationId);
   if (history) formData.append("history", JSON.stringify(history));
+  if (replyLanguage) formData.append("replyLanguage", replyLanguage);
 
   const response = await fetch("/api/chat/voice", {
     method: "POST",
@@ -68,20 +72,44 @@ export function createTextMessage(
 }
 
 export function createAudioMessage(
+  role: ChatMessage["role"],
   audioId: string,
   audioUrl: string,
-  duration: number
+  duration: number,
+  options?: { transcript?: string; autoPlayVoice?: boolean }
 ): ChatMessage {
   return {
     id: generateId(),
-    role: "user",
+    role,
     type: "audio",
-    content: "",
+    content: options?.transcript ?? "",
     timestamp: Date.now(),
     audioId,
     audioUrl,
     duration,
+    transcript: options?.transcript,
+    autoPlayVoice: options?.autoPlayVoice,
   };
+}
+
+export async function fetchSpeechAudio(
+  text: string,
+  replyLanguage?: ReplyLanguage
+): Promise<Blob> {
+  const response = await fetch("/api/speech", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text, replyLanguage }),
+  });
+
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}));
+    throw new Error(
+      (data as { error?: string }).error ?? "Could not generate AI voice."
+    );
+  }
+
+  return response.blob();
 }
 
 export function buildHistoryFromMessages(
@@ -97,5 +125,7 @@ export function buildHistoryFromMessages(
 export function serializeMessagesForStorage(
   messages: ChatMessage[]
 ): ChatMessage[] {
-  return messages.map(({ audioUrl: _, ...rest }) => rest);
+  return messages.map(
+    ({ audioUrl: _, autoPlayVoice: __, ...rest }) => rest
+  );
 }

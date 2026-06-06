@@ -7,6 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { SectionHeading } from "./SectionHeading";
 
 const FAQ_ITEMS = [
   {
@@ -22,7 +23,7 @@ const FAQ_ITEMS = [
   {
     question: "What languages are supported?",
     answer:
-      "HotelMind supports English, Spanish, French, German, and Mandarin out of the box. Additional languages can be configured based on your property's guest demographics.",
+      "HotelMind supports English, Arabic, and German for replies, with per-message translation. Voice messages and text chat work seamlessly across all three languages.",
   },
   {
     question: "How long does setup take?",
@@ -37,44 +38,49 @@ const FAQ_ITEMS = [
   {
     question: "What happens when the AI can't answer a question?",
     answer:
-      'When information isn\'t in your knowledge base, the assistant responds: "I don\'t have information about that in my current hotel knowledge base." and can direct guests to contact staff for further assistance.',
+      'When information isn\'t in your knowledge base, the assistant responds politely and can direct guests to contact staff for further assistance.',
   },
 ];
 
 export function FAQSection() {
   return (
-    <section id="faq" className="py-24">
-      <div className="mx-auto max-w-3xl px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <span className="text-sm font-medium text-primary mb-3 block">
-            FAQ
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
-            Frequently Asked Questions
-          </h2>
-          <p className="text-muted-foreground">
-            Everything you need to know about HotelMind.
-          </p>
-        </motion.div>
+    <section id="faq" className="py-28 relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(139,92,246,0.06),transparent_70%)]" />
+
+      <div className="relative mx-auto max-w-3xl px-6">
+        <SectionHeading
+          label="FAQ"
+          title="Frequently Asked Questions"
+          description="Everything you need to know about HotelMind."
+        />
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ duration: 0.6, delay: 0.15 }}
         >
-          <Accordion type="single" collapsible className="w-full">
+          <Accordion type="single" collapsible className="w-full space-y-2">
             {FAQ_ITEMS.map((item, i) => (
-              <AccordionItem key={i} value={`item-${i}`}>
-                <AccordionTrigger>{item.question}</AccordionTrigger>
-                <AccordionContent>{item.answer}</AccordionContent>
-              </AccordionItem>
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.06, duration: 0.4 }}
+              >
+                <AccordionItem
+                  value={`item-${i}`}
+                  className="rounded-xl border border-white/10 bg-white/[0.03] px-4 backdrop-blur-sm data-[state=open]:border-primary/30 data-[state=open]:bg-white/[0.06] transition-colors"
+                >
+                  <AccordionTrigger className="hover:no-underline hover:text-primary transition-colors py-4">
+                    {item.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground leading-relaxed pb-4">
+                    {item.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              </motion.div>
             ))}
           </Accordion>
         </motion.div>

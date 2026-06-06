@@ -27,3 +27,27 @@ export function detectPromptInjection(input: string): boolean {
 export function escapeForPrompt(text: string): string {
   return text.replace(/```/g, "'''").replace(/\n{3,}/g, "\n\n");
 }
+
+/** Strip Markdown so chat bubbles show plain conversational text */
+export function formatAssistantReply(text: string): string {
+  let result = text.replace(/\r\n/g, "\n");
+
+  result = result.replace(/```[\s\S]*?```/g, (block) =>
+    block.replace(/```\w*\n?/g, "").replace(/```/g, "").trim()
+  );
+  result = result.replace(/`([^`\n]+)`/g, "$1");
+  result = result.replace(/\*\*([^*\n]+)\*\*/g, "$1");
+  result = result.replace(/__([^_\n]+)__/g, "$1");
+  result = result.replace(/\*([^*\n]+)\*/g, "$1");
+  result = result.replace(/(?<![\w])_([^_\n]+)_(?!\w)/g, "$1");
+  result = result.replace(/~~([^~\n]+)~~/g, "$1");
+  result = result.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1");
+  result = result.replace(/^#{1,6}\s+/gm, "");
+  result = result.replace(/^[\t ]*[-*+]\s+/gm, "");
+  result = result.replace(/^[\t ]*\d+[.)]\s+/gm, "");
+  result = result.replace(/\*\*/g, "");
+  result = result.replace(/(?<=\s)\*(?=\s)/g, "");
+  result = result.replace(/\n{3,}/g, "\n\n");
+
+  return result.trim();
+}

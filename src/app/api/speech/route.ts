@@ -4,19 +4,28 @@ import { rateLimit, getClientIp } from "@/lib/rate-limit";
 import { getOpenAIClient } from "@/lib/openai";
 import { detectLangFromText } from "@/lib/speech";
 import { sanitizeUserInput } from "@/lib/sanitize";
+import {
+  pickTtsVoiceForLanguage,
+  type ReplyLanguage,
+} from "@/lib/reply-language";
+import { replyLanguageSchema } from "@/lib/validations";
 
 export const runtime = "nodejs";
 
 const speechRequestSchema = z.object({
   text: z.string().min(1).max(4096),
+  replyLanguage: replyLanguageSchema.optional(),
 });
 
-function pickVoice(text: string): string {
+function pickVoice(text: string, replyLanguage?: ReplyLanguage): string {
+  if (replyLanguage) {
+    return pickTtsVoiceForLanguage(replyLanguage);
+  }
+
   const configured = process.env.OPENAI_TTS_VOICE;
   if (configured) return configured;
 
   const lang = detectLangFromText(text);
-  // OpenAI voices handle Arabic/multilingual well
   if (lang === "ar") return "nova";
   return "alloy";
 }
@@ -52,7 +61,7 @@ export async function POST(request: Request) {
 
     const openai = getOpenAIClient();
     const model = process.env.OPENAI_TTS_MODEL ?? "tts-1";
-    const voice = pickVoice(text);
+    const voice = pickVoice(text, parsed.data.replyLanguage);
 
     const response = await openai.audio.speech.create({
       model,

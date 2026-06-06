@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import { MessageSquare, Search, Zap } from "lucide-react";
+import { AnimatedBackground } from "./AnimatedBackground";
+import { SectionHeading } from "./SectionHeading";
 
 const STEPS = [
   {
@@ -9,14 +11,14 @@ const STEPS = [
     step: "01",
     title: "Guest Asks a Question",
     description:
-      "Guests interact with the AI assistant via chat widget, mobile app, or in-room tablet — in their preferred language.",
+      "Guests interact via chat widget, voice message, or in-room tablet — in their preferred language.",
   },
   {
     icon: Search,
     step: "02",
     title: "AI Searches Knowledge Base",
     description:
-      "Our RAG engine retrieves the most relevant information from your curated hotel knowledge base using semantic search.",
+      "Our RAG engine retrieves the most relevant information using semantic search from your curated content.",
   },
   {
     icon: Zap,
@@ -29,46 +31,57 @@ const STEPS = [
 
 export function HowItWorksSection() {
   return (
-    <section id="how-it-works" className="py-24 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent" />
+    <section id="how-it-works" className="py-28 relative overflow-hidden">
+      <AnimatedBackground variant="section" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/[0.03] to-transparent" />
 
       <div className="relative mx-auto max-w-7xl px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <span className="text-sm font-medium text-primary mb-3 block">
-            How It Works
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
-            Three Steps to Better Service
-          </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Deploy intelligent guest support in minutes, not months.
-          </p>
-        </motion.div>
+        <SectionHeading
+          label="How It Works"
+          title="Three Steps to Better Service"
+          description="Deploy intelligent guest support in minutes, not months."
+        />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-          <div className="hidden md:block absolute top-24 left-[20%] right-[20%] h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 relative">
+          <div className="hidden md:block absolute top-[4.5rem] left-[18%] right-[18%] h-px overflow-hidden">
+            <motion.div
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.2, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="h-full origin-left bg-gradient-to-r from-transparent via-primary/50 to-transparent"
+            />
+          </div>
 
           {STEPS.map((step, i) => (
             <motion.div
               key={step.step}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: i * 0.2 }}
-              className="relative text-center"
+              transition={{
+                duration: 0.65,
+                delay: i * 0.15,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              className="relative text-center group"
             >
-              <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl relative">
+              <motion.div
+                whileHover={{ scale: 1.08, rotate: 2 }}
+                transition={{ type: "spring", stiffness: 300 }}
+                className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl relative shadow-lg group-hover:border-primary/40 group-hover:shadow-primary/20 transition-all duration-300"
+              >
                 <step.icon className="h-8 w-8 text-primary" />
-                <span className="absolute -top-3 -right-3 flex h-7 w-7 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                <motion.span
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.4 + i * 0.15, type: "spring" }}
+                  className="absolute -top-3 -right-3 flex h-7 w-7 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground shadow-lg shadow-primary/30"
+                >
                   {step.step}
-                </span>
-              </div>
+                </motion.span>
+              </motion.div>
               <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed max-w-xs mx-auto">
                 {step.description}

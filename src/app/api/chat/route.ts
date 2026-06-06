@@ -6,10 +6,13 @@ import { processChatMessage } from "@/lib/chat-process";
 import { generateFallbackResponse } from "@/lib/openai";
 import { escapeForPrompt } from "@/lib/sanitize";
 import { generateId } from "@/lib/utils";
+import type { ReplyLanguage } from "@/lib/reply-language";
 
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
+  let replyLanguage: ReplyLanguage | undefined;
+
   try {
     const ip = getClientIp(request);
     const maxRequests = parseInt(process.env.RATE_LIMIT_MAX ?? "20", 10);
@@ -47,6 +50,8 @@ export async function POST(request: Request) {
       );
     }
 
+    replyLanguage = parsed.data.replyLanguage;
+
     const sanitized = sanitizeUserInput(parsed.data.message);
     if (!sanitized) {
       return NextResponse.json(
@@ -60,7 +65,11 @@ export async function POST(request: Request) {
       content: escapeForPrompt(item.content),
     }));
 
-    const reply = await processChatMessage(sanitized, history);
+    const reply = await processChatMessage(
+      sanitized,
+      history,
+      parsed.data.replyLanguage
+    );
 
     return NextResponse.json({
       message: reply,
@@ -70,7 +79,7 @@ export async function POST(request: Request) {
     console.error("[chat API error]", error);
     return NextResponse.json(
       {
-        message: await generateFallbackResponse(),
+        message: await generateFallbackResponse(undefined, replyLanguage),
         conversationId: generateId(),
       },
       { status: 200 }

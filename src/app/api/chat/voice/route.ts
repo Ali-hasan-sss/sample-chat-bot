@@ -5,6 +5,7 @@ import { getOpenAIClient } from "@/lib/openai";
 import { processChatMessage } from "@/lib/chat-process";
 import { generateId } from "@/lib/utils";
 import type { ChatHistoryItem } from "@/types/chat";
+import { isReplyLanguage } from "@/lib/reply-language";
 
 export const runtime = "nodejs";
 
@@ -40,6 +41,10 @@ export async function POST(request: Request) {
     const conversationId =
       (formData.get("conversationId") as string) || generateId();
     const historyRaw = formData.get("history") as string | null;
+    const replyLanguageRaw = formData.get("replyLanguage") as string | null;
+    const replyLanguage = isReplyLanguage(replyLanguageRaw)
+      ? replyLanguageRaw
+      : undefined;
 
     if (!file || !(file instanceof Blob) || file.size === 0) {
       return NextResponse.json({ error: "No audio received." }, { status: 400 });
@@ -85,7 +90,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const reply = await processChatMessage(transcript, history);
+    const reply = await processChatMessage(transcript, history, replyLanguage);
 
     return NextResponse.json({
       message: reply,

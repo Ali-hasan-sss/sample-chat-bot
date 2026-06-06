@@ -1,4 +1,10 @@
 import OpenAI from "openai";
+import { formatAssistantReply } from "@/lib/sanitize";
+import {
+  type ReplyLanguage,
+  getReplyLanguageInstruction,
+  getFallbackMessage,
+} from "@/lib/reply-language";
 
 let client: OpenAI | null = null;
 
@@ -20,9 +26,14 @@ export function getModel(): string {
 const SYSTEM_INSTRUCTIONS = `You are Meridian, the friendly AI assistant for Grand Meridian Hotel — a five-star luxury hotel.
 
 LANGUAGE (CRITICAL):
-- ALWAYS respond in the EXACT same language the guest uses — Arabic, English, French, Spanish, German, etc.
-- Never mix languages unless the guest does.
-- Use natural, warm phrasing appropriate to that language.
+- By default, respond in the EXACT same language the guest uses.
+- If a reply language is specified in additional instructions, that language OVERRIDES everything — use it for the full response.
+- Never mix languages unless quoting a proper noun.
+
+FORMATTING (CRITICAL):
+- Write in plain text ONLY — like WhatsApp or SMS chat
+- NEVER use Markdown or formatting symbols: no **, *, #, -, bullet lists, numbered lists, backticks, or headers
+- Use line breaks and commas for structure; separate items with new lines or periods, not symbols
 
 CONVERSATIONAL BEHAVIOR:
 - Greet guests warmly when they say hello
@@ -53,9 +64,14 @@ export interface ChatHistoryItem {
 export async function generateChatResponse(
   userMessage: string,
   context: string,
-  history: ChatHistoryItem[] = []
+  history: ChatHistoryItem[] = [],
+  replyLanguage?: ReplyLanguage
 ): Promise<string> {
   const openai = getOpenAIClient();
+
+  const instructions = replyLanguage
+    ? `${SYSTEM_INSTRUCTIONS}\n\n${getReplyLanguageInstruction(replyLanguage)}`
+    : SYSTEM_INSTRUCTIONS;
 
   const historyInput = history.slice(-6).map((item) => ({
     role: item.role as "user" | "assistant",
@@ -64,7 +80,7 @@ export async function generateChatResponse(
 
   const response = await openai.responses.create({
     model: getModel(),
-    instructions: SYSTEM_INSTRUCTIONS,
+    instructions,
     input: [
       ...historyInput,
       {
@@ -81,15 +97,19 @@ export async function generateChatResponse(
     throw new Error("Empty response from OpenAI");
   }
 
-  return outputText.trim();
+  return formatAssistantReply(outputText);
 }
 
 export async function generateFallbackResponse(
-  languageHint?: string
+  languageHint?: string,
+  replyLanguage?: ReplyLanguage
 ): Promise<string> {
+  if (replyLanguage) {
+    return getFallbackMessage(replyLanguage);
+  }
   const isArabic = languageHint && /[\u0600-\u06FF]/.test(languageHint);
   if (isArabic) {
-    return "عذراً، لا تتوفر لدي معلومات عن ذلك في قاعدة معرفة الفندق الحالية. يرجى التواصل مع الاستقبال للمساعدة.";
+    return getFallbackMessage("ar");
   }
-  return "I don't have information about that in my current hotel knowledge base.";
+  return getFallbackMessage("en");
 }

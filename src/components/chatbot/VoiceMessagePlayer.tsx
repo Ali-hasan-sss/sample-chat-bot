@@ -8,6 +8,7 @@ interface VoiceMessagePlayerProps {
   src: string;
   duration?: number;
   isUser?: boolean;
+  autoPlay?: boolean;
 }
 
 function formatTime(seconds: number): string {
@@ -20,8 +21,10 @@ export const VoiceMessagePlayer = memo(function VoiceMessagePlayer({
   src,
   duration = 0,
   isUser = false,
+  autoPlay = false,
 }: VoiceMessagePlayerProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const autoPlayedRef = useRef(false);
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
@@ -55,6 +58,30 @@ export const VoiceMessagePlayer = memo(function VoiceMessagePlayer({
       audio.src = "";
     };
   }, [src]);
+
+  useEffect(() => {
+    autoPlayedRef.current = false;
+  }, [src]);
+
+  useEffect(() => {
+    if (!autoPlay || autoPlayedRef.current) return;
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    autoPlayedRef.current = true;
+    const tryPlay = () => {
+      audio
+        .play()
+        .then(() => setPlaying(true))
+        .catch(() => {});
+    };
+
+    if (audio.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) {
+      tryPlay();
+    } else {
+      audio.addEventListener("canplay", tryPlay, { once: true });
+    }
+  }, [autoPlay, src]);
 
   const togglePlay = useCallback(() => {
     const audio = audioRef.current;

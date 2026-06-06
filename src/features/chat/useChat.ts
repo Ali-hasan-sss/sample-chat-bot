@@ -6,6 +6,7 @@ import { useChatPersistence } from "@/hooks/useChatPersistence";
 import {
   sendChatMessage,
   sendVoiceMessage,
+  fetchSpeechAudio,
   createTextMessage,
   createAudioMessage,
   buildHistoryFromMessages,
@@ -18,6 +19,7 @@ import {
   deleteAllAudioBlobs,
 } from "@/lib/audio-storage";
 import { generateId } from "@/lib/utils";
+import { useReplyLanguage } from "@/hooks/useReplyLanguage";
 
 export const QUICK_SUGGESTIONS = [
   "What are your operating hours?",
@@ -47,6 +49,7 @@ async function hydrateAudioMessages(messages: ChatMessage[]): Promise<ChatMessag
 export function useChat() {
   const { conversation, isLoaded, saveConversation, clearConversation } =
     useChatPersistence();
+  const { replyLanguage, setReplyLanguage } = useReplyLanguage();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [status, setStatus] = useState<ChatStatus>("idle");
   const [error, setError] = useState<string | null>(null);
@@ -93,7 +96,8 @@ export function useChat() {
         const response = await sendChatMessage(
           trimmed,
           conversationIdRef.current,
-          history
+          history,
+          replyLanguage
         );
 
         conversationIdRef.current = response.conversationId;
@@ -109,7 +113,7 @@ export function useChat() {
         );
       }
     },
-    [messages, status, persist]
+    [messages, status, persist, replyLanguage]
   );
 
   const sendVoiceMessageHandler = useCallback(
@@ -118,7 +122,7 @@ export function useChat() {
 
       const audioId = generateId();
       const audioUrl = createAudioObjectUrl(audio);
-      const userMessage = createAudioMessage(audioId, audioUrl, duration);
+      const userMessage = createAudioMessage("user", audioId, audioUrl, duration);
 
       const updatedWithUser = [...messages, userMessage];
       setMessages(updatedWithUser);
@@ -132,7 +136,8 @@ export function useChat() {
         const response = await sendVoiceMessage(
           audio,
           conversationIdRef.current,
-          history
+          history,
+          replyLanguage
         );
 
         conversationIdRef.current = response.conversationId;
@@ -147,10 +152,21 @@ export function useChat() {
           m.id === userMessage.id ? userMessageWithTranscript : m
         );
 
-        const assistantMessage: ChatMessage = {
-          ...createTextMessage("assistant", response.message),
-          replyWithVoice: true,
-        };
+        const speechBlob = await fetchSpeechAudio(response.message, replyLanguage);
+        const assistantAudioId = generateId();
+        await saveAudioBlob(assistantAudioId, speechBlob);
+        const assistantAudioUrl = createAudioObjectUrl(speechBlob);
+
+        const assistantMessage = createAudioMessage(
+          "assistant",
+          assistantAudioId,
+          assistantAudioUrl,
+          0,
+          {
+            transcript: response.message,
+            autoPlayVoice: true,
+          }
+        );
         const finalMessages = [...withTranscript, assistantMessage];
         setMessages(finalMessages);
         persist(finalMessages);
@@ -163,7 +179,7 @@ export function useChat() {
         );
       }
     },
-    [messages, status, persist]
+    [messages, status, persist, replyLanguage]
   );
 
   const handleClear = useCallback(async () => {
@@ -180,6 +196,8 @@ export function useChat() {
     status,
     error,
     isLoaded,
+    replyLanguage,
+    setReplyLanguage,
     sendMessage,
     sendVoiceMessage: sendVoiceMessageHandler,
     clearConversation: handleClear,

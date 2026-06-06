@@ -1,11 +1,14 @@
 import { z } from "zod";
 
+export const replyLanguageSchema = z.enum(["en", "ar", "de"]);
+
 export const chatRequestSchema = z.object({
   message: z
     .string()
     .min(1, "Message is required")
     .max(2000, "Message too long"),
   conversationId: z.string().max(100).optional(),
+  replyLanguage: replyLanguageSchema.optional(),
   history: z
     .array(
       z.object({

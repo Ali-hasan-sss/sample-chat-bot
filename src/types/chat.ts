@@ -12,8 +12,8 @@ export interface ChatMessage {
   duration?: number;
   /** Internal transcript for chat history (audio messages) */
   transcript?: string;
-  /** Auto-play AI voice when this assistant message appears */
-  replyWithVoice?: boolean;
+  /** Auto-play once when assistant voice bubble appears (not persisted) */
+  autoPlayVoice?: boolean;
 }
 
 export interface ChatConversation {
