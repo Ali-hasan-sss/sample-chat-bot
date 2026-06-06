@@ -42,11 +42,26 @@ export const ChatInput = memo(
     const pointerStartRef = useRef({ x: 0, y: 0 });
     const holdingRef = useRef(false);
     const userEngagedRef = useRef(false);
+    const keepKeyboardRef = useRef(false);
+    const wasSendingRef = useRef(false);
+
+    const maintainFocus = useCallback(() => {
+      if (!keepKeyboardRef.current) return;
+      const el = textareaRef.current;
+      if (!el) return;
+
+      el.focus({ preventScroll: true });
+      requestAnimationFrame(() => {
+        el.focus({ preventScroll: true });
+        window.setTimeout(() => el.focus({ preventScroll: true }), 50);
+      });
+    }, []);
 
     const refocusIfEngaged = useCallback(() => {
       if (!userEngagedRef.current || !textareaRef.current) return;
-      textareaRef.current.focus({ preventScroll: true });
-    }, []);
+      keepKeyboardRef.current = true;
+      maintainFocus();
+    }, [maintainFocus]);
 
     useImperativeHandle(ref, () => ({
       refocusIfEngaged,
@@ -56,6 +71,7 @@ export const ChatInput = memo(
       (blob: Blob, duration: number) => {
         setVoiceError(null);
         userEngagedRef.current = false;
+        keepKeyboardRef.current = false;
         onVoiceMessage(blob, duration);
       },
       [onVoiceMessage]
@@ -78,18 +94,26 @@ export const ChatInput = memo(
     const handleSubmit = useCallback(() => {
       const trimmed = value.trim();
       if (!trimmed || disabled || isSending) return;
-      const shouldKeepFocus = userEngagedRef.current;
+
+      userEngagedRef.current = true;
+      keepKeyboardRef.current = true;
       onSend(trimmed);
       setValue("");
       if (textareaRef.current) {
         textareaRef.current.style.height = "auto";
       }
-      if (shouldKeepFocus) {
-        requestAnimationFrame(() => {
-          textareaRef.current?.focus({ preventScroll: true });
-        });
+      maintainFocus();
+    }, [value, disabled, isSending, onSend, maintainFocus]);
+
+    useEffect(() => {
+      if (isSending && keepKeyboardRef.current) {
+        maintainFocus();
       }
-    }, [value, disabled, isSending, onSend]);
+      if (wasSendingRef.current && !isSending && keepKeyboardRef.current) {
+        maintainFocus();
+      }
+      wasSendingRef.current = Boolean(isSending);
+    }, [isSending, maintainFocus]);
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
       if (e.key === "Enter" && !e.shiftKey) {
@@ -109,6 +133,7 @@ export const ChatInput = memo(
         if (disabled || isSending || isProcessing || isBusy) return;
         e.preventDefault();
         userEngagedRef.current = false;
+        keepKeyboardRef.current = false;
         holdingRef.current = true;
         setIsHolding(true);
         setIsCancelActive(false);
@@ -158,6 +183,8 @@ export const ChatInput = memo(
 
     const preventBlur = useCallback((e: React.MouseEvent | React.PointerEvent) => {
       e.preventDefault();
+      keepKeyboardRef.current = true;
+      userEngagedRef.current = true;
     }, []);
 
     useEffect(() => {
@@ -206,18 +233,28 @@ export const ChatInput = memo(
           <textarea
             ref={textareaRef}
             value={value}
-            onChange={(e) => setValue(e.target.value)}
+            onChange={(e) => {
+              if (isSending) return;
+              setValue(e.target.value);
+            }}
             onFocus={() => {
               userEngagedRef.current = true;
+              keepKeyboardRef.current = true;
             }}
             onBlur={() => {
-              if (!isSending && !showRecordUi) {
+              if (showRecordUi) return;
+              window.setTimeout(() => {
+                if (document.activeElement === textareaRef.current) return;
+                if (keepKeyboardRef.current && isSending) {
+                  maintainFocus();
+                  return;
+                }
+                keepKeyboardRef.current = false;
                 userEngagedRef.current = false;
-              }
+              }, 100);
             }}
             onKeyDown={handleKeyDown}
             placeholder="Type a message or hold mic..."
-            readOnly={isSending}
             disabled={textareaLocked}
             rows={1}
             enterKeyHint="send"
@@ -258,6 +295,10 @@ export const ChatInput = memo(
             onClick={handleSubmit}
             onMouseDown={preventBlur}
             onPointerDown={preventBlur}
+            onTouchEnd={(e) => {
+              e.preventDefault();
+              maintainFocus();
+            }}
             disabled={disabled || isSending || showRecordUi || isBusy || !value.trim()}
             aria-label="Send message"
             className={cn(

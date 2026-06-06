@@ -86,13 +86,13 @@ export const ChatWindow = memo(function ChatWindow({
             <div className="flex items-center gap-3 min-w-0 flex-1">
               <ChatAvatar
                 src={AVATARS.assistant}
-                alt="Meridian Assistant"
+                alt="Assistant"
                 size="md"
                 online
               />
               <div className="min-w-0">
                 <SheetTitle className="flex items-center gap-2">
-                  Meridian Assistant
+                   Assistant
                   <Sparkles className="h-3.5 w-3.5 text-primary/80" />
                 </SheetTitle>
                 <p className="text-xs text-emerald-400 flex items-center gap-1.5 mt-0.5">

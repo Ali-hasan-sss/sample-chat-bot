@@ -130,7 +130,7 @@ export const ChatMessageBubble = memo(function ChatMessageBubble({
       >
         <ChatAvatar
           src={isUser ? AVATARS.guest : AVATARS.assistant}
-          alt={isUser ? "Guest" : "Meridian Assistant"}
+          alt={isUser ? "Guest" : " Assistant"}
           size="sm"
           online={!isUser}
         />
