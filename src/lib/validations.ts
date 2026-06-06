@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const replyLanguageSchema = z.enum(["en", "ar", "de"]);
+export const replyLanguageSchema = z.enum(["en", "de", "fr"]);
 
 export const chatRequestSchema = z.object({
   message: z

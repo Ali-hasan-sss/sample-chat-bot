@@ -1,19 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --background: #04060c;
-  --foreground: #f0f0f5;
-  --primary: #22d3ee;
-  --primary-foreground: #04060c;
-  --secondary: #121826;
-  --secondary-foreground: #f0f0f5;
-  --muted: #161c2a;
-  --muted-foreground: #9494a8;
-  --ring: #22d3ee;
-  --card: #0a0e18;
-  --card-foreground: #f0f0f5;
-  --accent-violet: #8b5cf6;
-  --accent-cyan: #22d3ee;
+  --background: #ffffff;
+  --foreground: #2b2b2b;
+  --primary: #f15a24;
+  --primary-foreground: #ffffff;
+  --secondary: #efefef;
+  --secondary-foreground: #2b2b2b;
+  --muted: #efefef;
+  --muted-foreground: #6b6b6b;
+  --ring: #f15a24;
+  --card: #ffffff;
+  --card-foreground: #2b2b2b;
+  --site-header-height: 5.5rem;
 }
 
 @theme inline {
@@ -213,6 +212,12 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .nav-slogan-spin {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
   .animate-float,
   .animate-float-reverse,
   .animate-float-delayed,
@@ -348,6 +353,240 @@ body {
   display: none;
   width: 0;
   height: 0;
+}
+
+/* ── FU.life landing utilities ── */
+
+.fu-rounded {
+  border-radius: 1.25rem;
+  overflow: hidden;
+}
+
+.grainy {
+  filter: contrast(1.05) saturate(0.95);
+}
+
+.keyvisual {
+  position: relative;
+}
+
+.keyvisual img {
+  object-fit: cover;
+}
+
+.benefit-chip {
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.benefit-chip:hover {
+  transform: translateY(-1px);
+  background-color: #e8e8e8;
+}
+
+.cards-spread .roomcard {
+  transition: transform 0.35s ease;
+}
+
+@media (hover: hover) {
+  .cards-spread .roomcard:hover {
+    transform: translateY(-6px);
+  }
+}
+
+.prime {
+  position: relative;
+}
+
+.txtbtn-outline {
+  letter-spacing: 0.01em;
+}
+
+.fullsize-catchphrase {
+  letter-spacing: -0.02em;
+}
+
+.shift-right-up {
+  transform: translate(4%, -2%);
+}
+
+@media (max-width: 1024px) {
+  .shift-right-up {
+    transform: none;
+  }
+}
+
+/* ── FU.life site header (nav bars + rotating slogan) ── */
+
+.site-header {
+  min-height: var(--site-header-height);
+}
+
+.site-header--scrolled {
+  background-color: rgb(255 255 255 / 0.78);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom-color: rgb(0 0 0 / 0.06);
+  box-shadow: 0 1px 12px rgb(0 0 0 / 0.04);
+}
+
+@keyframes nav-slogan-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.nav-slogan-spin {
+  animation: nav-slogan-rotate 18s linear infinite;
+}
+
+.nav-slogan-spin--paused {
+  animation-play-state: paused;
+}
+
+#nav-trigger {
+  position: relative;
+}
+
+.nav-trigger-bars {
+  position: relative;
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #2b2b2b;
+  border-radius: 1px;
+  transition: background 0.25s ease;
+}
+
+.nav-trigger-bars::before,
+.nav-trigger-bars::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 22px;
+  height: 2px;
+  background: #2b2b2b;
+  border-radius: 1px;
+  transition: transform 0.25s ease, top 0.25s ease;
+}
+
+.nav-trigger-bars::before {
+  top: -7px;
+}
+
+.nav-trigger-bars::after {
+  top: 7px;
+}
+
+.nav-trigger-bars--open {
+  background: transparent;
+}
+
+.nav-trigger-bars--open::before {
+  top: 0;
+  transform: rotate(45deg);
+}
+
+.nav-trigger-bars--open::after {
+  top: 0;
+  transform: rotate(-45deg);
+}
+
+.navigation-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+#navigation-wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 70;
+  width: min(100%, 420px);
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 5.5rem 2rem 2rem;
+  overflow-y: auto;
+  box-shadow: -8px 0 40px rgba(0, 0, 0, 0.12);
+}
+
+#navigation ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#navigation > ul > li {
+  margin-bottom: 1.5rem;
+}
+
+#navigation > ul > li > a {
+  font-size: 1.125rem;
+  color: #2b2b2b;
+  text-decoration: none;
+}
+
+#navigation .main-link span {
+  display: block;
+  font-size: 0.75rem;
+  color: #6b6b6b;
+  margin-top: 0.25rem;
+}
+
+#navigation .secondary-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+#navigation .navbtn {
+  display: inline-block;
+  font-size: 0.875rem;
+  padding: 0.625rem 1rem;
+  border-radius: 9999px;
+  text-decoration: none;
+  text-align: center;
+}
+
+#navigation .navbtn.mint {
+  background: #7d99aa;
+  color: #fff;
+}
+
+#navigation .navbtn.outline {
+  border: 1px solid #2b2b2b;
+  color: #2b2b2b;
+}
+
+#copyright {
+  margin-top: auto;
+  padding-top: 2rem;
+  font-size: 0.75rem;
+  color: #9b9b9b;
+}
+
+#secondary-navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  font-size: 0.8125rem;
+}
+
+#secondary-navigation a {
+  color: #6b6b6b;
+  text-decoration: none;
+}
+
+#secondary-navigation a:hover {
+  color: #f15a24;
 }
 
 /* ── Chat panel animations ── */

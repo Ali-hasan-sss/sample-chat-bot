@@ -4,10 +4,10 @@ import { useId } from "react";
 import { cn } from "@/lib/utils";
 import type { ReplyLanguage } from "@/lib/reply-language";
 
-const FLAG_IDS: Record<ReplyLanguage, "gb" | "sa" | "de"> = {
+const FLAG_IDS: Record<ReplyLanguage, "gb" | "de" | "fr"> = {
   en: "gb",
-  ar: "sa",
   de: "de",
+  fr: "fr",
 };
 
 interface LanguageFlagProps {
@@ -16,7 +16,6 @@ interface LanguageFlagProps {
   size?: number;
 }
 
-/** SVG flags — reliable on Windows where emoji flags show as GB/SA/DE */
 export function LanguageFlag({
   language,
   className,
@@ -35,20 +34,15 @@ export function LanguageFlag({
       aria-hidden
     >
       {id === "gb" && <FlagGB size={size} clipId={clipId} />}
-      {id === "sa" && <FlagSA size={size} clipId={clipId} />}
       {id === "de" && <FlagDE size={size} clipId={clipId} />}
+      {id === "fr" && <FlagFR size={size} clipId={clipId} />}
     </span>
   );
 }
 
 function FlagGB({ size, clipId }: { size: number; clipId: string }) {
   return (
-    <svg
-      viewBox="0 0 60 60"
-      width={size}
-      height={size}
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg viewBox="0 0 60 60" width={size} height={size}>
       <clipPath id={clipId}>
         <circle cx="30" cy="30" r="30" />
       </clipPath>
@@ -63,45 +57,31 @@ function FlagGB({ size, clipId }: { size: number; clipId: string }) {
   );
 }
 
-function FlagSA({ size, clipId }: { size: number; clipId: string }) {
+function FlagDE({ size, clipId }: { size: number; clipId: string }) {
   return (
-    <svg
-      viewBox="0 0 60 60"
-      width={size}
-      height={size}
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg viewBox="0 0 60 60" width={size} height={size}>
       <clipPath id={clipId}>
         <circle cx="30" cy="30" r="30" />
       </clipPath>
       <g clipPath={`url(#${clipId})`}>
-        <rect width="60" height="60" fill="#006C35" />
-        <rect x="14" y="26" width="32" height="3" rx="1" fill="#fff" />
-        <rect x="14" y="31" width="24" height="3" rx="1" fill="#fff" />
-        <path
-          d="M30 18 L34 24 L41 24 L35.5 28.5 L37.5 35.5 L30 31.5 L22.5 35.5 L24.5 28.5 L19 24 L26 24 Z"
-          fill="#fff"
-        />
+        <rect width="60" height="20" fill="#000" />
+        <rect width="60" height="20" y="20" fill="#DD0000" />
+        <rect width="60" height="20" y="40" fill="#FFCE00" />
       </g>
     </svg>
   );
 }
 
-function FlagDE({ size, clipId }: { size: number; clipId: string }) {
+function FlagFR({ size, clipId }: { size: number; clipId: string }) {
   return (
-    <svg
-      viewBox="0 0 60 60"
-      width={size}
-      height={size}
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg viewBox="0 0 60 60" width={size} height={size}>
       <clipPath id={clipId}>
         <circle cx="30" cy="30" r="30" />
       </clipPath>
       <g clipPath={`url(#${clipId})`}>
-        <rect width="60" height="20" y="0" fill="#000" />
-        <rect width="60" height="20" y="20" fill="#DD0000" />
-        <rect width="60" height="20" y="40" fill="#FFCE00" />
+        <rect width="20" height="60" fill="#002395" />
+        <rect width="20" height="60" x="20" fill="#fff" />
+        <rect width="20" height="60" x="40" fill="#ED2939" />
       </g>
     </svg>
   );

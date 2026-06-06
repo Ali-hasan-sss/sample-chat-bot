@@ -1,53 +1,64 @@
 "use client";
 
-import { memo } from "react";
-import { motion } from "framer-motion";
-import { Badge } from "@/components/ui/badge";
+import { memo, useMemo } from "react";
+import type { ReplyLanguage } from "@/lib/reply-language";
+import { REPLY_LANGUAGE_OPTIONS } from "@/lib/reply-language";
+import type { QuickSuggestionDef } from "@/lib/fulife-chat";
+import { WidgetButton } from "./WidgetButton";
+import { WidgetButtonGroup } from "./WidgetButtonGroup";
+import { LanguageFlag } from "./LanguageFlag";
+import { FU } from "@/lib/fulife-theme";
 
 interface QuickSuggestionsProps {
-  suggestions: readonly string[];
-  onSelect: (suggestion: string) => void;
+  suggestions: readonly QuickSuggestionDef[];
+  replyLanguage: ReplyLanguage;
+  onSelect: (id: string) => void;
+  onLanguageChange: (lang: ReplyLanguage) => void;
+  showLanguageFlags?: boolean;
   disabled?: boolean;
 }
 
 export const QuickSuggestions = memo(function QuickSuggestions({
   suggestions,
+  replyLanguage,
   onSelect,
+  onLanguageChange,
+  showLanguageFlags = false,
   disabled,
 }: QuickSuggestionsProps) {
+  const otherLanguages = useMemo(
+    () => REPLY_LANGUAGE_OPTIONS.filter((option) => option.code !== replyLanguage),
+    [replyLanguage]
+  );
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35, delay: 0.1 }}
-      className="px-3 pt-3 pb-2 bg-gradient-to-t from-background/80 to-transparent"
-    >
-      <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2 px-1">
-        Quick messages
-      </p>
-      <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
-        {suggestions.map((suggestion, i) => (
-          <motion.button
-            key={suggestion}
-            type="button"
+    <WidgetButtonGroup layout="inline">
+      {suggestions.map((item) => (
+        <WidgetButton
+          key={item.id}
+          fullWidth={false}
+          disabled={disabled}
+          className={item.id === "book" ? "font-medium hover:opacity-90" : undefined}
+          style={item.id === "book" ? { backgroundColor: FU.orange, color: "#fff", borderColor: FU.orange } : undefined}
+          onClick={() => onSelect(item.id)}
+        >
+          {item.label[replyLanguage] ?? item.label.en}
+        </WidgetButton>
+      ))}
+
+      {showLanguageFlags &&
+        otherLanguages.map((option) => (
+          <WidgetButton
+            key={option.code}
+            fullWidth={false}
             disabled={disabled}
-            initial={{ opacity: 0, x: -8 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: i * 0.05, duration: 0.3 }}
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.96 }}
-            onClick={() => onSelect(suggestion)}
-            className="shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
+            ariaLabel={`Switch to ${option.label}`}
+            className="flex items-center justify-center !px-2.5 !py-1.5"
+            onClick={() => onLanguageChange(option.code)}
           >
-            <Badge
-              variant="default"
-              className="cursor-pointer hover:bg-primary/15 transition-all whitespace-nowrap text-xs px-3 py-1.5 shadow-md shadow-black/15"
-            >
-              {suggestion}
-            </Badge>
-          </motion.button>
+            <LanguageFlag language={option.code} size={20} />
+          </WidgetButton>
         ))}
-      </div>
-    </motion.div>
+    </WidgetButtonGroup>
   );
 });

@@ -17,33 +17,31 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "HotelMind — AI-Powered Hospitality Technology",
-    template: "%s | HotelMind",
+    default: "FU.life Berlin | Co-Living Redefined",
+    template: "%s | FU.life",
   },
   description:
-    "Intelligent AI assistants for hotels. Reduce staff workload, deliver 24/7 guest support, and provide consistent multilingual answers from your knowledge base.",
+    "Fully furnished co-living at Ku'damm 69, Berlin. Community, convenience, and private rooms — book your stay at FU.life.",
   keywords: [
-    "hotel AI",
-    "hospitality technology",
-    "guest support chatbot",
-    "hotel chatbot",
-    "RAG",
-    "knowledge base",
+    "FU.life",
+    "co-living Berlin",
+    "Kurfürstendamm",
+    "furnished apartments Berlin",
+    "coliving",
   ],
-  authors: [{ name: "HotelMind" }],
+  authors: [{ name: "FU.life" }],
+  icons: {
+    icon: [{ url: "/favicon.ico", sizes: "any" }],
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
+  },
   openGraph: {
-    title: "HotelMind — AI-Powered Hospitality Technology",
+    title: "FU.life Berlin | Co-Living Redefined",
     description:
-      "Elevate every guest experience with intelligent AI assistants for hotels.",
+      "Your friends will love your new place. Fully furnished co-living at Ku'damm 69.",
     type: "website",
     locale: "en_US",
-    siteName: "HotelMind",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "HotelMind — AI-Powered Hospitality Technology",
-    description:
-      "Elevate every guest experience with intelligent AI assistants for hotels.",
+    siteName: "FU.life",
   },
   robots: {
     index: true,
@@ -59,9 +57,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} dark h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground">
+      <body className="min-h-full flex flex-col bg-white text-[#2B2B2B]">
         {children}
         <ChatbotLoader />
       </body>

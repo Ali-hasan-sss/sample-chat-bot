@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 47 91" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(1,0,0,1,-30.8447,-27.8877)">
+        <g>
+            <g transform="matrix(1,0,0,1,0,14)">
+                <rect x="30.864" y="43.4" width="5.735" height="19.236" style="fill:rgb(238,115,88);"/>
+                <g transform="matrix(1,0,0,1.20539,9.68521,-12.8646)">
+                    <rect x="30.864" y="43.4" width="5.735" height="19.236" style="fill:rgb(238,115,88);"/>
+                </g>
+                <g transform="matrix(1,0,0,2.53422,20.073,-96.0976)">
+                    <rect x="30.864" y="43.4" width="5.735" height="19.236" style="fill:rgb(238,115,88);"/>
+                </g>
+                <g transform="matrix(1,0,0,1.20539,30.0735,-12.8646)">
+                    <rect x="30.864" y="43.4" width="5.735" height="19.236" style="fill:rgb(238,115,88);"/>
+                </g>
+                <g transform="matrix(1,0,0,0.893911,40.3829,6.645)">
+                    <rect x="30.864" y="43.4" width="5.735" height="19.236" style="fill:rgb(238,115,88);"/>
+                </g>
+            </g>
+            <g transform="matrix(1,0,0,1,0,14)">
+                <path d="M30.845,67.379L51.13,67.379L51.13,72.42L36.031,72.42L36.031,82.445L43.417,82.445L42.197,87.629L35.991,87.629L35.991,104.61L31.018,104.61L30.845,67.379Z" style="fill:rgb(238,115,88);"/>
+            </g>
+            <g transform="matrix(1,0,0,1,0,14)">
+                <path d="M56.106,67.379L61.331,67.379L61.331,95.191C61.331,95.191 62.304,98.968 66.001,98.968C69.698,98.968 71.537,95.298 71.537,95.298L71.537,67.379L76.554,67.379L76.554,97.008C76.554,97.008 75.7,104.61 66.229,104.61C56.757,104.61 56.461,96.992 56.461,96.992L56.106,67.379Z" style="fill:rgb(238,115,88);"/>
+            </g>
+        </g>
+    </g>
+</svg>

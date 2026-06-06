@@ -9,7 +9,7 @@ export const ChatbotWidget = memo(function ChatbotWidget() {
 
   return (
     <>
-      {!open && <ChatButton onClick={() => setOpen(true)} isOpen={false} />}
+      {!open && <ChatButton onClick={() => setOpen(true)} />}
       <ChatWindow open={open} onOpenChange={setOpen} />
     </>
   );

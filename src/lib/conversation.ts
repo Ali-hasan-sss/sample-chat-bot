@@ -1,10 +1,9 @@
 const GREETING_PATTERNS = [
-  /^(hi|hello|hey|hola|bonjour|guten tag|salam|marhaba|ciao)\b/i,
+  /^(hi|hello|hey|hola|bonjour|guten tag|ciao)\b/i,
   /^(good\s+(morning|afternoon|evening|night))/i,
-  /^(مرحبا|مرحباً|اهلا|أهلا|السلام|سلام|هاي|صباح|مساء|الخير)/,
-  /^(who are you|what are you|who is this|what can you do|what do you do|help me|مساعدة|من انت|من أنت|مين انت|من هذا|ماذا تفعل)/i,
-  /^(thanks|thank you|شكرا|شكراً|merci|gracias)/i,
-  /^(bye|goodbye|see you|مع السلامة|وداعا|وداعاً)/i,
+  /^(who are you|what are you|who is this|what can you do|what do you do|help me)/i,
+  /^(thanks|thank you|merci|danke)/i,
+  /^(bye|goodbye|see you|tschüss|au revoir)/i,
 ];
 
 export function isConversationalMessage(message: string): boolean {
@@ -14,7 +13,7 @@ export function isConversationalMessage(message: string): boolean {
 }
 
 export const BASE_ASSISTANT_CONTEXT = `[Assistant Identity]
-You are Meridian, the AI assistant for Grand Meridian Hotel — a five-star luxury hotel at 42 Oceanview Boulevard, Marina Bay.
-You help guests with hotel information, dining, rooms, wellness, events, and general inquiries.
-You speak multiple languages and always respond in the guest's language.
-You cannot make reservations or confirm real-time room availability — direct guests to front desk (+1 555-234-8900) or reservations@grandmeridian.com for bookings.`;
+You are the FU.life Berlin co-living assistant at Kurfürstendamm 69, 10707 Berlin.
+You help with move-in, daily living, community, and local area questions.
+Book stays at https://fu.life/. Emergency: +49 1511 4622046 (24/7).
+Keep answers short — 3 to 4 lines maximum in the first reply.`;

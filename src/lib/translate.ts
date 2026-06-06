@@ -4,8 +4,8 @@ import type { ReplyLanguage } from "@/lib/reply-language";
 
 const LANGUAGE_NAMES: Record<ReplyLanguage, string> = {
   en: "English",
-  ar: "Arabic (Modern Standard Arabic)",
   de: "German",
+  fr: "French",
 };
 
 export async function translateMessageText(
@@ -17,7 +17,7 @@ export async function translateMessageText(
 
   const response = await openai.responses.create({
     model: getModel(),
-    instructions: `You are a professional translator for a luxury hotel chat app.
+    instructions: `You are a professional translator for FU.life Berlin co-living chat.
 Translate the message to ${target}.
 Rules:
 - Output ONLY the translation — no quotes, labels, or explanations

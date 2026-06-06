@@ -3,198 +3,184 @@
     {
       "id": "assistant-identity",
       "category": "Assistant",
-      "title": "AI Assistant Identity",
-      "content": "You are Meridian, the official AI assistant for Grand Meridian Hotel. You welcome guests warmly, answer questions about the hotel, dining, rooms, wellness, pool, gym, events, and contact details. You support English, Arabic, Spanish, French, German, and Mandarin. You are friendly, professional, and concise. You cannot make bookings or access guest accounts — for reservations, direct guests to front desk at +1 (555) 234-8900 or reservations@grandmeridian.com.",
-      "keywords": ["who are you", "hello", "hi", "assistant", "bot", "chatbot", "help", "مرحبا", "من انت", "مساعد", "ترحيب", "welcome", "identity"]
+      "title": "FU.life Berlin Assistant",
+      "content": "You are the FU.life Berlin co-living assistant for Genix Tech GmbH. Property: FU.life Berlin at Kurfürstendamm 69, 10707 Berlin. You help residents and guests with move-in, daily living, community, and Berlin area info. Be concise (3-4 lines max in first reply). Book stays at https://fu.life/. Emergency hotline: +49 1511 4622046 (24/7).",
+      "keywords": ["who are you", "hello", "hi", "help", "assistant", "fu.life", "berlin"]
     },
     {
-      "id": "operating-hours-24-7",
-      "category": "Operating Hours",
-      "title": "Hotel Operating Hours — 24/7 Services",
-      "content": "Grand Meridian Hotel operates core guest services 24 hours a day, 7 days a week, 365 days a year. ALWAYS OPEN (24/7): Front Desk & Reception, Guest Support (dial 0), Security, In-Room Dining, Fitness Center (gym), Business Center, Valet Parking, Luggage Storage, Concierge emergency line, and AI Assistant. Front Desk phone: +1 (555) 234-8900 — available around the clock. Guest support average response time under 15 minutes at any hour. Limited-hour facilities: Sunrise Terrace breakfast 6:30–10:30 AM daily; Azure Restaurant lunch 12:00–2:30 PM & dinner 6:00–10:30 PM (Tue–Sun, closed Mon); Wellness & Spa 6:00 AM–10:00 PM; Rooftop Pool 7:00 AM–9:00 PM; Lobby Lounge 11:00 AM–midnight. Housekeeping visits rooms 9:00 AM–4:00 PM daily.",
-      "keywords": ["operating hours", "working hours", "open", "closed", "24/7", "24 hours", "around the clock", "ساعات العمل", "ساعات الدوام", "مواعيد العمل", "متى تفتح", "متى تغلق", "مفتوح", "على مدار الساعة", "طوال اليوم", "استقبال", "دوام", "hours", "schedule", "time", "horaires", "öffnungszeiten"]
+      "id": "property-overview",
+      "category": "Our Hotel",
+      "title": "FU.life Berlin Overview",
+      "content": "FU.life Berlin is co-living redefined at Ku'damm 69, 10707 Berlin. Fully furnished private rooms with private kitchen or kitchenette, high-speed Wi-Fi, Smart-TV, towels and bedsheets, cleaning, workspace, laundry room, elevator, pets welcome. Rescheduling available. Trusted on Airbnb with 4.9 rating. Book at fu.life.",
+      "keywords": ["hotel", "property", "co-living", "coliving", "what is fu", "about", "included", "amenities"]
     },
     {
-      "id": "daily-specials-program",
-      "category": "Dining & Meals",
-      "title": "Daily Dish of the Day Program",
-      "content": "Chef's Daily Special at Azure Restaurant (12th floor) — changes every day. MONDAY (restaurant closed, special at Lobby Lounge): Grilled Sea Bass with lemon herb butter, roasted vegetables, saffron rice. TUESDAY Lunch: Lamb Tagine with apricots and almonds. Tuesday Dinner: Pan-seared Scallops with cauliflower purée. WEDNESDAY Lunch: Mediterranean Mezze Platter for two. Wednesday Dinner: Wagyu Beef Tenderloin with truffle jus. THURSDAY Lunch: Fresh Pasta of the Day (handmade). Thursday Dinner: Whole Roasted Branzino with capers and olives. FRIDAY Lunch: Friday Feast — Mixed Grill (lamb, chicken, kofta) with Arabic bread. Friday Dinner: Lobster Thermidor. SATURDAY Lunch: Chef's Seafood Paella. Saturday Dinner: Dry-aged Ribeye with bone marrow butter. SUNDAY Lunch: Slow-roasted Lamb Shoulder. Sunday Dinner: Chef's Tasting Menu (5 courses, reservation required). Daily soup and dessert specials also available — ask your server. Vegetarian and gluten-free alternatives available daily.",
-      "keywords": ["dish of the day", "daily special", "chef special", "today's menu", "special menu", "طبق اليوم", "الطبق اليومي", "برنامج الطبق", "وجبة اليوم", "ماذا يوجد اليوم", "special du jour", "menu today", "daily menu", "specials"]
+      "id": "room-types",
+      "category": "Our Hotel",
+      "title": "Room Types — Fire, Earth, Wind, Water",
+      "content": "Four elemental room themes at FU.life Berlin: Fire — warm energizing atmosphere. Earth — calm focus-friendly space. Wind — airy light relaxing design. Water — calming clutter-free deep-thinking space. All fully furnished with bed, desk, chair, wardrobe, private bathroom, kitchen or kitchenette.",
+      "keywords": ["room", "fire", "earth", "wind", "water", "roomtype", "furnished"]
     },
     {
-      "id": "breakfast-menu-detail",
-      "category": "Dining & Meals",
-      "title": "Breakfast Menu — Full Details",
-      "content": "Sunrise Terrace Buffet (ground floor, east wing) — Daily 6:30–10:30 AM (weekends until 11:00 AM). HOT STATIONS: Eggs Benedict, Omelette Station (custom), Pancakes & Waffles, Arabic Shakshuka, Grilled Halloumi, Beef Bacon & Chicken Sausages, Baked Beans, Sautéed Mushrooms. COLD SELECTION: Smoked Salmon, Assorted Cheeses (Brie, Cheddar, Feta), Charcuterie, Fresh Fruits & Berries, Greek Yogurt with Honey & Granola, Overnight Oats. ARABIC CORNER: Hummus, Mutabal, Labneh, Olives, Falafel, Fresh Arabic Bread (baked on-site), Dates & Arabic Coffee. BAKERY: Croissants, Pain au Chocolat, Muffins, Danish Pastries, Sourdough Toast. BEVERAGES: Espresso, Cappuccino, Latte, Fresh Juices (orange, apple, watermelon), Herbal Teas. Children's corner with cereals and mini pancakes. All buffet items included in room rate for guests on breakfast-inclusive plans.",
-      "keywords": ["breakfast menu", "breakfast items", "buffet breakfast", "فطور", "منيو الفطور", "قائمة الفطور", "إفطار", "morning food", "brunch"]
+      "id": "move-in-furnished",
+      "category": "Move-In",
+      "title": "Fully Furnished — What to Bring",
+      "content": "Every unit is fully furnished: bed, desk, chair, wardrobe, private bathroom, kitchen or kitchenette. Bring only personal items — like moving with a suitcase or two.",
+      "keywords": ["furnished", "furniture", "move in", "what to bring", "möbliert"]
     },
     {
-      "id": "lunch-dinner-menu-detail",
-      "category": "Dining & Meals",
-      "title": "Lunch & Dinner Menus — Azure & Lobby Lounge",
-      "content": "AZURE RESTAURANT (12th floor, Mediterranean fine dining): STARTERS — Burrata with heirloom tomatoes, Tuna Tartare, French Onion Soup, Arabic Mezze Selection. MAINS — Grilled Octopus, Lobster Risotto, Chicken Tagine, Vegetable Moussaka, Grilled Lamb Chops, Pan-fried Sea Bream. DESSERTS — Baklava Cheesecake, Tiramisu, Seasonal Fruit Sorbet, Chocolate Fondant. LOBBY LOUNGE (all day 11:00 AM–midnight): Club Sandwich, Caesar Salad, Wagyu Burger, Margherita Pizza, Fish & Chips, Arabic Mixed Grill Plate, Truffle Fries. IN-ROOM DINING (24/7): Full menu including Arabic, Asian, Western — Club Sandwich, Chicken Biryani, Pasta Carbonara, Arabic Breakfast Platter, Kids Menu (chicken nuggets, pasta, fruit plate). Dietary: vegetarian, vegan, gluten-free, halal, and allergy-friendly options available — inform staff when ordering.",
-      "keywords": ["lunch menu", "dinner menu", "food menu", "restaurant menu", "what to eat", "قائمة الطعام", "منيو", "غداء", "عشاء", "أطباق", "menu", "dishes", "plat du jour"]
+      "id": "move-in-late-arrival",
+      "category": "Move-In",
+      "title": "Late Arrival & Self Check-in",
+      "content": "Late arrival is no problem. Self check-in is available 24 hours a day, 7 days a week.",
+      "keywords": ["late arrival", "check in", "self check-in", "24/7", "arrival"]
     },
     {
-      "id": "meals-breakfast",
-      "category": "Dining & Meals",
-      "title": "Breakfast",
-      "content": "Breakfast is served daily at The Sunrise Terrace (ground floor, east wing). Hours: 6:30 AM – 10:30 AM (weekdays), 6:30 AM – 11:00 AM (weekends and public holidays). International buffet with Arabic corner, egg station, fresh bakery, smoked salmon, and specialty coffee. Executive Lounge guests (26th floor) enjoy complimentary continental breakfast 7:00 AM – 10:00 AM. In-room breakfast delivery available 24/7 (full breakfast menu, delivery 7:00 AM – 11:00 AM for buffet items — order via in-room tablet or dial 0).",
-      "keywords": ["breakfast", "morning meal", "buffet", "فطور", "وجبة الصباح", "إفطار", "meal", "food", "dining hours", "morning"]
+      "id": "minimum-stay",
+      "category": "Move-In",
+      "title": "Minimum Stay",
+      "content": "There is no minimum stay requirement at FU.life Berlin.",
+      "keywords": ["minimum stay", "how long", "duration", "mindestaufenthalt"]
     },
     {
-      "id": "meals-lunch-dinner",
-      "category": "Dining & Meals",
-      "title": "Lunch & Dinner",
-      "content": "Azure Restaurant (12th floor): lunch Tue–Sun 12:00 PM – 2:30 PM, dinner Tue–Sun 6:00 PM – 10:30 PM, closed Mondays. Mediterranean fine dining. Lobby Lounge (ground floor): light meals, sandwiches, salads, and cocktails daily 11:00 AM – midnight, walk-ins welcome. In-room dining: available 24 hours with full menu including Arabic, Asian, and Western dishes. Pool Bar (27th floor): snacks and beverages 11:00 AM – 7:00 PM. Azure dinner requires reservation — contact +1 (555) 234-8920 or concierge.",
-      "keywords": ["lunch", "dinner", "meals", "food", "menu", "restaurant hours", "غداء", "عشاء", "وجبات", "مواعيد الطعام", "مواعيد الوجبات", "طعام", "مطعم"]
+      "id": "anmeldung",
+      "category": "Move-In",
+      "title": "Anmeldung Registration",
+      "content": "Anmeldung (city registration) is supported. Register within two weeks of moving in. All required documents are provided.",
+      "keywords": ["anmeldung", "registration", "address", "bürgeramt"]
     },
     {
-      "id": "meals-overview",
-      "category": "Dining & Meals",
-      "title": "Meals Schedule Overview",
-      "content": "Daily meal schedule: Breakfast 6:30–10:30 AM at Sunrise Terrace. Lunch 12:00–2:30 PM at Azure (Tue–Sun). Dinner 6:00–10:30 PM at Azure (Tue–Sun). All-day dining at Lobby Lounge 11:00 AM – midnight. 24-hour in-room dining. Pool Bar snacks 11:00 AM – 7:00 PM. Executive Lounge: breakfast 7–10 AM, afternoon tea 3–5 PM, evening canapés 6–8 PM for suite guests.",
-      "keywords": ["meal schedule", "dining times", "when is food", "restaurant open", "hours", "schedule", "مواعيد", "جدول", "وقت", "متى"]
+      "id": "gez-fees",
+      "category": "Move-In",
+      "title": "GEZ Broadcasting Fee",
+      "content": "The German broadcasting fee (GEZ/Rundfunkbeitrag) is included in the rent.",
+      "keywords": ["gez", "broadcasting", "rundfunk", "fees"]
     },
     {
-      "id": "room-availability",
-      "category": "Room Availability",
-      "title": "Room Availability Information",
-      "content": "Grand Meridian has 312 rooms total: 220 Standard rooms, 62 Deluxe Ocean View rooms, and 30 Suites (Executive and Presidential). Standard and Deluxe rooms are typically available year-round except peak season (June–August and December holidays) when availability may be limited. Suites require advance booking. This assistant provides general room information only — it cannot confirm real-time availability or vacant rooms. For current availability and rates, contact Reservations at +1 (555) 234-8901, reservations@grandmeridian.com, or visit the front desk. Same-day availability is subject to confirmation by reservations staff.",
-      "keywords": ["available rooms", "vacant", "empty rooms", "availability", "free rooms", "room free", "غرف فارغة", "غرف متاحة", "توفر", "حجز غرفة", "rooms available", "book room", "occupancy"]
+      "id": "utilities-included",
+      "category": "Move-In",
+      "title": "Utilities Included",
+      "content": "Electricity, water, and internet are fully included in the rent.",
+      "keywords": ["utilities", "electricity", "water", "internet", "included", "nebenkosten"]
     },
     {
-      "id": "rooms-deluxe",
-      "category": "Room Information",
-      "title": "Deluxe Ocean View Rooms",
-      "content": "Deluxe Ocean View rooms are 48 square meters (520 sq ft) on floors 10–25 with panoramic sea views. King bed, sitting area, upgraded minibar, bath with tub and rain shower. Maximum occupancy: 2 adults + 1 child. Nightly turndown service included. Popular choice — early booking recommended during peak season.",
-      "keywords": ["deluxe", "ocean view", "room types", "غرف", "غرفة", "إقامة"]
+      "id": "key-handover",
+      "category": "Move-In",
+      "title": "Key Handover",
+      "content": "Keys are handed over during the move-in appointment with signing of the handover protocol (Übergabeprotokoll).",
+      "keywords": ["keys", "handover", "move in appointment", "schlüssel"]
     },
     {
-      "id": "hotel-overview",
-      "category": "Hotel Information",
-      "title": "Grand Meridian Hotel Overview",
-      "content": "Grand Meridian Hotel is a five-star luxury destination at 42 Oceanview Boulevard, Marina Bay. 312 rooms and suites across 28 floors with panoramic ocean views. Check-in 3:00 PM, check-out 11:00 AM (early/late available on request). Complimentary high-speed Wi-Fi, 24/7 front desk and concierge, valet parking ($35/night), EV charging stations, business center (24/7), kids welcome program, pet-friendly rooms (limited, $50/night). Currency exchange, ATM, and luxury retail boutiques on ground floor. Airport shuttle on request ($45 one-way). Free parking for electric vehicles. Hotel star rating: 5 stars. Total staff: 450+ multilingual professionals.",
-      "keywords": ["hotel", "overview", "check-in", "check-out", "location", "address", "wifi", "concierge", "parking", "about hotel", "معلومات الفندق", "عن الفندق", "تفاصيل", "facilities", "services"]
+      "id": "check-in-out",
+      "category": "During Stay",
+      "title": "Check-in and Check-out Times",
+      "content": "Check-in from 3:00 PM. Check-out by 10:00 AM. Early check-in and late check-out available on request.",
+      "keywords": ["check-in", "check-out", "check in", "check out", "times", "early", "late"]
     },
     {
-      "id": "hotel-contact",
-      "category": "Contact Details",
-      "title": "Hotel Contact Information",
-      "content": "Front Desk: +1 (555) 234-8900 (available 24/7). Reservations: +1 (555) 234-8901 or reservations@grandmeridian.com. Concierge: +1 (555) 234-8902 or concierge@grandmeridian.com. General inquiries: info@grandmeridian.com. Address: 42 Oceanview Boulevard, Marina Bay, CA 90210. Emergency services within the hotel: dial 0 from any in-room phone. For medical emergencies, dial 911 or contact front desk immediately.",
-      "keywords": ["contact", "phone", "email", "address", "reservations", "concierge", "emergency"]
+      "id": "building-access",
+      "category": "During Stay",
+      "title": "Building Access — Häfele Access",
+      "content": "Building access is via the Häfele Access app using your smartphone.",
+      "keywords": ["access", "door", "building", "häfele", "app", "entry"]
     },
     {
-      "id": "rooms-standard",
-      "category": "Room Information",
-      "title": "Standard Rooms",
-      "content": "Standard rooms are 38 square meters (410 sq ft) with king or twin bed configurations. Amenities include premium bedding, blackout curtains, in-room safe, minibar, Nespresso machine, 55-inch smart TV, and marble bathroom with rain shower. Maximum occupancy: 2 adults. Daily housekeeping is provided between 9:00 AM and 4:00 PM.",
-      "keywords": ["room", "standard", "bed", "amenities", "housekeeping", "occupancy"]
+      "id": "cleaning",
+      "category": "During Stay",
+      "title": "Cleaning Schedule",
+      "content": "Full cleaning on arrival. Long stays: cleaning every 14 days. Short stays: weekly cleaning.",
+      "keywords": ["cleaning", "housekeeping", "reinigung", "clean"]
     },
     {
-      "id": "rooms-suite",
-      "category": "Room Information",
-      "title": "Suites",
-      "content": "Executive and Presidential suites range from 75 to 180 square meters. Suites include separate living areas, premium minibar, Butler service (Presidential Suite), panoramic ocean views, and complimentary airport transfers for Presidential Suite guests. Suite guests receive priority restaurant reservations and access to the Executive Lounge on the 26th floor with complimentary breakfast, afternoon tea, and evening canapés.",
-      "keywords": ["suite", "executive", "presidential", "butler", "lounge", "luxury"]
+      "id": "bathroom-supplies",
+      "category": "During Stay",
+      "title": "Bathroom Supplies",
+      "content": "Bathroom amenities are HAIL Europe products.",
+      "keywords": ["bathroom", "toiletries", "supplies", "shampoo", "soap"]
     },
     {
-      "id": "wellness-overview",
-      "category": "Wellness",
-      "title": "Wellness & Spa Overview",
-      "content": "The Meridian Wellness Center is located on the 5th floor and is open daily from 6:00 AM to 10:00 PM. Services include massage therapy, facial treatments, body wraps, aromatherapy, and holistic wellness consultations. Advance booking is recommended. Spa reception: +1 (555) 234-8910. Guests must arrive 15 minutes before appointments. Robes and slippers are provided. The wellness center maintains a tranquil, phone-free environment.",
-      "keywords": ["wellness", "spa", "massage", "facial", "treatment", "relaxation", "booking"]
+      "id": "pets",
+      "category": "During Stay",
+      "title": "Pets",
+      "content": "Pets are welcome at FU.life Berlin.",
+      "keywords": ["pets", "dog", "cat", "tier", "haustier"]
     },
     {
-      "id": "wellness-facilities",
-      "category": "Wellness",
-      "title": "Wellness Facilities Available",
-      "content": "Available wellness facilities include: thermal suite with heated loungers, experience showers, relaxation lounge with herbal tea service, yoga studio (daily classes at 7:00 AM and 5:30 PM), meditation room, and outdoor terrace with ocean views. Complimentary access for hotel guests. Day passes available for non-guests at $85 per person. Yoga mats and props are provided free of charge.",
-      "keywords": ["wellness facilities", "yoga", "meditation", "thermal", "relaxation", "terrace"]
+      "id": "overnight-guests",
+      "category": "During Stay",
+      "title": "Overnight Guests",
+      "content": "Overnight guests are allowed provided house rules are respected.",
+      "keywords": ["guests", "overnight", "visitor", "besucher"]
     },
     {
-      "id": "sauna",
-      "category": "Sauna",
-      "title": "Sauna & Steam Room",
-      "content": "Finnish dry sauna (80-90°C) and eucalyptus steam room are located in the wellness area on the 5th floor. Open 6:00 AM to 10:00 PM daily. Towels are provided at the entrance. Maximum recommended session is 15 minutes. Not recommended for pregnant guests, guests with cardiovascular conditions, or children under 16. Cold plunge pool available adjacent to sauna area. Please shower before entering.",
-      "keywords": ["sauna", "steam", "finnish", "eucalyptus", "cold plunge", "wellness"]
+      "id": "laundry",
+      "category": "During Stay",
+      "title": "Laundry",
+      "content": "Washing machines and dryers are available for a small fee.",
+      "keywords": ["laundry", "washing", "dryer", "wäsche"]
     },
     {
-      "id": "gym",
-      "category": "Gym",
-      "title": "Fitness Center",
-      "content": "The 24-hour fitness center on the 5th floor features Technogym equipment including treadmills, ellipticals, rowing machines, free weights up to 50kg, cable machines, and a functional training zone. Personal training sessions available ($75/hour, book via concierge). Complimentary fitness towels and water stations provided. Minimum age 16; guests 16-18 must be accompanied by an adult.",
-      "keywords": ["gym", "fitness", "workout", "personal training", "equipment", "24 hour"]
+      "id": "maintenance",
+      "category": "During Stay",
+      "title": "Maintenance & Repairs",
+      "content": "For maintenance issues contact the local property manager.",
+      "keywords": ["maintenance", "repair", "broken", "fix", "issue"]
     },
     {
-      "id": "pool",
-      "category": "Pool",
-      "title": "Swimming Pool",
-      "content": "Rooftop infinity pool on the 27th floor with panoramic ocean views. Open 7:00 AM to 9:00 PM daily (weather permitting). Pool depth ranges from 1.2m to 1.8m. Heated to 28°C year-round. Poolside cabanas available for rent ($50/half day). Lifeguard on duty 10:00 AM to 6:00 PM. Children under 12 must be supervised by an adult. Pool towels provided at the pool deck entrance.",
-      "keywords": ["pool", "swimming", "infinity", "rooftop", "heated", "cabana", "lifeguard"]
+      "id": "parking",
+      "category": "Getting Around",
+      "title": "Parking — No Private Spot",
+      "content": "No private parking on site. Use public street parking or nearby garages: Q-Park Fürst, Galeria Kurfürstendamm, CONTIPARK Los Angeles Platz. Street parking is mostly paid, around 4 EUR per hour in some areas.",
+      "keywords": ["parking", "car", "garage", "parkplatz", "auto"]
     },
     {
-      "id": "restaurant-azure",
-      "category": "Restaurant",
-      "title": "Azure Restaurant",
-      "content": "Azure is our signature fine-dining restaurant on the 12th floor, serving contemporary Mediterranean cuisine. Open Tuesday to Sunday: lunch 12:00 PM - 2:30 PM, dinner 6:00 PM - 10:30 PM. Closed Mondays. Dress code: smart casual (no flip-flops or beachwear). Reservations required for dinner; book via concierge, +1 (555) 234-8920, or the in-room dining tablet. Private dining room available for up to 12 guests.",
-      "keywords": ["restaurant", "azure", "dining", "reservation", "mediterranean", "fine dining", "book table"]
+      "id": "mail-delivery",
+      "category": "During Stay",
+      "title": "Mail Delivery Address",
+      "content": "Mail address: Kurfürstendamm 69, 10707 Berlin. Use your full name and room number.",
+      "keywords": ["mail", "post", "delivery", "address", "postal"]
     },
     {
-      "id": "restaurant-booking",
-      "category": "Restaurant",
-      "title": "Restaurant Reservations",
-      "content": "To book a restaurant table: call +1 (555) 234-8920, email dining@grandmeridian.com, ask concierge, or use the hotel mobile app. Provide preferred date, time, party size, and dietary requirements. Cancellations must be made at least 4 hours in advance. The Lobby Lounge (ground floor) accepts walk-ins for light meals and cocktails daily 11:00 AM - midnight. In-room dining available 24 hours.",
-      "keywords": ["restaurant booking", "reservation", "table", "dining", "cancel", "lobby lounge"]
+      "id": "departure-notice",
+      "category": "Move-Out",
+      "title": "Notice Period",
+      "content": "For monthly stays, give approximately one week's notice before moving out.",
+      "keywords": ["notice", "move out", "departure", "kündigung", "leave"]
     },
     {
-      "id": "events-conference",
-      "category": "Events",
-      "title": "Conference & Meeting Facilities",
-      "content": "The Meridian Conference Center on floors 2-3 offers 8 meeting rooms and a grand ballroom accommodating up to 500 guests. AV equipment, high-speed Wi-Fi, and dedicated event coordinators included. Event inquiries: events@grandmeridian.com or +1 (555) 234-8930. Catering packages available. Business center open 24/7 on the ground floor.",
-      "keywords": ["events", "conference", "meeting", "ballroom", "corporate", "catering"]
+      "id": "subletting",
+      "category": "Move-Out",
+      "title": "Subletting",
+      "content": "Subletting is evaluated case by case.",
+      "keywords": ["sublet", "untervermietung", "sublease"]
     },
     {
-      "id": "events-social",
-      "category": "Events",
-      "title": "Social Events & Weddings",
-      "content": "Grand Meridian hosts weddings, galas, and private celebrations. The Ocean Terrace accommodates up to 200 guests for ceremonies and receptions. Dedicated wedding planner assigned to each booking. Packages start at $15,000. Site visits available by appointment. Contact events@grandmeridian.com for proposals and availability.",
-      "keywords": ["wedding", "social events", "celebration", "terrace", "planner", "party"]
+      "id": "damages-deposit",
+      "category": "Move-Out",
+      "title": "Damages and Deposit",
+      "content": "Report damages to property management immediately. Security deposit refund as soon as possible after unit condition is verified. Move-out inspection covers furniture, cleanliness, and keys. Send departure report by email.",
+      "keywords": ["deposit", "damage", "refund", "kaution", "move out"]
     },
     {
-      "id": "medical-assistance",
-      "category": "Medical Assistance",
-      "title": "Medical Assistance Information",
-      "content": "For medical emergencies, dial 911 or contact front desk (dial 0). The hotel keeps a first-aid kit at the front desk and with security. Nearest hospital: Marina Bay General Hospital, 1.2 miles away (5-minute drive). Hotel can arrange taxi or ambulance transport. On-call physician service available 24/7 through concierge ($150 consultation fee, may be billable to room). Basic over-the-counter medications available at front desk. The hotel staff are not licensed medical professionals and cannot provide medical diagnosis or treatment.",
-      "keywords": ["medical", "doctor", "hospital", "emergency", "first aid", "health", "physician"]
+      "id": "emergency-hotline",
+      "category": "Emergency",
+      "title": "24/7 Emergency Hotline",
+      "content": "Emergencies: power outage, heating failure, water leaks — call +49 1511 4622046 anytime. Lost phone? Call same number for alternative building access.",
+      "keywords": ["emergency", "urgent", "hotline", "24/7", "lost phone", "notfall"]
     },
     {
-      "id": "careers",
-      "category": "Careers",
-      "title": "Careers at Grand Meridian",
-      "content": "Grand Meridian Hotel is always seeking talented hospitality professionals. Current openings include front desk associates, sous chefs, spa therapists, and guest relations managers. Apply at careers.grandmeridian.com or email hr@grandmeridian.com. Benefits include competitive salary, health insurance, employee dining, and career development programs. Internship programs available for hospitality students.",
-      "keywords": ["careers", "jobs", "employment", "hiring", "apply", "HR"]
+      "id": "community-coworking",
+      "category": "Community",
+      "title": "Community & Co-working",
+      "content": "FU.life offers community spaces, event spaces, private fitness center, and co-working at no extra cost. Live with like-minded people — private room, real community, your pace.",
+      "keywords": ["community", "coworking", "co-working", "events", "fitness", "network"]
     },
     {
-      "id": "guest-support",
-      "category": "Guest Support",
-      "title": "Guest Support Services",
-      "content": "Our guest support team is available 24/7 via front desk, in-room phone (dial 0), or the hotel mobile app live chat. Services include wake-up calls, laundry and dry cleaning (same-day before 9:00 AM), luggage storage, currency exchange at front desk, translation assistance, and local activity recommendations. Average response time for non-urgent requests is under 15 minutes.",
-      "keywords": ["guest support", "help", "assistance", "laundry", "wake up", "concierge"]
-    },
-    {
-      "id": "chatbot-capabilities",
-      "category": "Chatbot Limitations",
-      "title": "AI Assistant Capabilities & Limitations",
-      "content": "This AI assistant (Meridian) answers questions about hotel information, meal schedules, room types, general availability info, wellness, restaurants, events, contact details, pool, gym, sauna, and medical assistance. It greets guests and supports Arabic, English, Spanish, French, and German. It CANNOT make reservations, confirm real-time vacant rooms, process payments, or access guest account data. For bookings and live availability, contact front desk (+1 555-234-8900) or reservations@grandmeridian.com.",
-      "keywords": ["chatbot", "AI", "limitations", "capabilities", "what can you do", "help", "حجز", "booking"]
-    },
-    {
-      "id": "multilingual",
-      "category": "Hotel Information",
-      "title": "Multilingual Support",
-      "content": "Grand Meridian Hotel staff speak English, Spanish, French, Mandarin, Japanese, and Arabic. The AI assistant Meridian supports conversations in English, Arabic, Spanish, French, German, and Mandarin — always responding in the guest's language. For other languages, live interpreter service is available through concierge.",
-      "keywords": ["multilingual", "language", "translation", "interpreter", "international", "arabic", "english", "لغة", "عربي", "ترجمة"]
+      "id": "book-stay",
+      "category": "Booking",
+      "title": "Book Your Stay",
+      "content": "Book your stay at https://fu.life/ — choose your room type (Fire, Earth, Wind, Water) and move in with minimal hassle.",
+      "keywords": ["book", "booking", "reserve", "reservation", "stay", "buchen"]
     }
   ]
 }

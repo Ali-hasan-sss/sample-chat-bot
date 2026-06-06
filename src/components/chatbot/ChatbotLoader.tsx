@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { usePathname } from "next/navigation";
 
 const ChatbotWidget = dynamic(
   () =>
@@ -9,5 +10,11 @@ const ChatbotWidget = dynamic(
 );
 
 export function ChatbotLoader() {
+  const pathname = usePathname();
+
+  if (pathname === "/chat") {
+    return null;
+  }
+
   return <ChatbotWidget />;
 }

@@ -1,23 +1,18 @@
 "use client";
 
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { Volume2, VolumeX, Loader2, Mic } from "lucide-react";
+import { Mic } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatAssistantReply } from "@/lib/sanitize";
+import { splitReadMore } from "@/lib/openai";
 import type { ChatMessage } from "@/types/chat";
-import type { ReplyLanguage } from "@/lib/reply-language";
-import { translateMessage } from "@/services/translation-service";
 import { VoiceMessagePlayer } from "./VoiceMessagePlayer";
-import { ChatAvatar, AVATARS } from "./ChatAvatar";
-import { MessageTranslateMenu } from "./MessageTranslateMenu";
+import { MessageRow } from "./ChatAvatar";
+import { FU } from "@/lib/fulife-theme";
 
 interface ChatMessageBubbleProps {
   message: ChatMessage;
-  speak?: (text: string, messageId: string) => void;
-  isSpeaking?: boolean;
-  isLoadingVoice?: boolean;
-  ttsSupported?: boolean;
 }
 
 function getSourceText(message: ChatMessage, isUser: boolean): string {
@@ -29,10 +24,6 @@ function getSourceText(message: ChatMessage, isUser: boolean): string {
 
 export const ChatMessageBubble = memo(function ChatMessageBubble({
   message,
-  speak,
-  isSpeaking = false,
-  isLoadingVoice = false,
-  ttsSupported = false,
 }: ChatMessageBubbleProps) {
   const isUser = message.role === "user";
   const isAudio = message.type === "audio";
@@ -41,132 +32,46 @@ export const ChatMessageBubble = memo(function ChatMessageBubble({
     [message, isUser]
   );
 
-  const [activeLanguage, setActiveLanguage] = useState<ReplyLanguage | null>(
-    null
+  const { preview, extra } = useMemo(
+    () =>
+      isUser ? { preview: sourceText, extra: null } : splitReadMore(sourceText),
+    [isUser, sourceText]
   );
-  const [translations, setTranslations] = useState<
-    Partial<Record<ReplyLanguage, string>>
-  >({});
-  const [loadingLanguage, setLoadingLanguage] =
-    useState<ReplyLanguage | null>(null);
-  const [translateError, setTranslateError] = useState<string | null>(null);
 
-  const displayText =
-    activeLanguage && translations[activeLanguage]
-      ? translations[activeLanguage]
-      : sourceText;
+  const [expanded, setExpanded] = useState(false);
+  const displayText = expanded && extra ? `${preview}\n${extra}` : preview;
 
   const showText = isAudio
-    ? isUser
-      ? Boolean(displayText) || !sourceText
-      : Boolean(displayText) || activeLanguage !== null
+    ? Boolean(displayText) || !sourceText
     : Boolean(displayText);
-
-  const handleTranslate = useCallback(
-    async (lang: ReplyLanguage) => {
-      if (!sourceText) return;
-
-      if (activeLanguage === lang) {
-        setActiveLanguage(null);
-        setTranslateError(null);
-        return;
-      }
-
-      if (translations[lang]) {
-        setActiveLanguage(lang);
-        setTranslateError(null);
-        return;
-      }
-
-      setLoadingLanguage(lang);
-      setTranslateError(null);
-
-      try {
-        const translation = await translateMessage(sourceText, lang);
-        setTranslations((prev) => ({ ...prev, [lang]: translation }));
-        setActiveLanguage(lang);
-      } catch (err) {
-        setTranslateError(
-          err instanceof Error ? err.message : "Could not translate."
-        );
-      } finally {
-        setLoadingLanguage(null);
-      }
-    },
-    [activeLanguage, sourceText, translations]
-  );
-
-  const canTranslate = Boolean(sourceText);
 
   return (
     <motion.div
-      initial={{
-        opacity: 0,
-        y: 14,
-        x: isUser ? 24 : -24,
-        scale: 0.94,
-      }}
-      animate={{ opacity: 1, y: 0, x: 0, scale: 1 }}
-      transition={{
-        type: "spring",
-        stiffness: 420,
-        damping: 28,
-        mass: 0.8,
-      }}
-      className={cn(
-        "flex gap-2.5 px-4 py-1.5",
-        isUser ? "flex-row-reverse" : "flex-row"
-      )}
+      initial={{ opacity: 0, y: 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.2 }}
     >
-      <motion.div
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{
-          type: "spring",
-          stiffness: 500,
-          damping: 22,
-          delay: 0.05,
-        }}
-      >
-        <ChatAvatar
-          src={isUser ? AVATARS.guest : AVATARS.assistant}
-          alt={isUser ? "Guest" : " Assistant"}
-          size="sm"
-          online={!isUser}
-        />
-      </motion.div>
-      <div className="flex flex-col gap-1 max-w-[85%]">
-        <motion.div
-          layout
+      <MessageRow role={isUser ? "user" : "assistant"}>
+        <div
           className={cn(
-            "rounded-2xl px-4 py-2.5 text-sm leading-relaxed",
+            "rounded-2xl px-3.5 py-2.5 text-[13px] leading-relaxed whitespace-pre-wrap",
             isUser
-              ? "rounded-tr-md bg-gradient-to-br from-primary to-cyan-400/90 text-primary-foreground shadow-lg shadow-primary/25"
-              : "rounded-tl-md bg-white/[0.08] shadow-lg shadow-black/25 backdrop-blur-sm"
+              ? "rounded-tr-sm text-white"
+              : "rounded-tl-sm text-[#2B2B2B]"
           )}
+          style={{
+            backgroundColor: isUser ? FU.orange : FU.lightGray,
+          }}
         >
           {isAudio ? (
             <div className="space-y-2">
-              {showText &&
-                (displayText ? (
-                  <p>{displayText}</p>
-                ) : (
-                  <p className="text-xs opacity-70 italic">
-                    Transcribing voice...
-                  </p>
-                ))}
+              {showText && displayText && <p>{displayText}</p>}
               {message.audioUrl && (
-                <div
-                  className={cn(
-                    showText &&
-                      displayText &&
-                      (isUser ? "pt-2 mt-1" : "pt-2 mt-1")
-                  )}
-                >
+                <div className={showText && displayText ? "pt-1" : ""}>
                   {isUser && (
-                    <div className="flex items-center gap-1.5 text-[10px] opacity-70 mb-1">
+                    <div className="mb-1 flex items-center gap-1 text-[10px] opacity-70">
                       <Mic className="h-3 w-3" />
-                      <span>Original recording</span>
+                      <span>Voice</span>
                     </div>
                   )}
                   <VoiceMessagePlayer
@@ -181,72 +86,19 @@ export const ChatMessageBubble = memo(function ChatMessageBubble({
           ) : (
             displayText
           )}
-        </motion.div>
-
-        <div
-          className={cn(
-            "flex items-center gap-2",
-            isUser ? "self-end flex-row-reverse" : "self-start"
-          )}
-        >
-          {canTranslate && (
-            <MessageTranslateMenu
-              activeLanguage={activeLanguage}
-              loadingLanguage={loadingLanguage}
-              onSelect={handleTranslate}
-              align={isUser ? "end" : "start"}
-              disabled={loadingLanguage !== null}
-            />
-          )}
-          {!isUser &&
-            message.type !== "audio" &&
-            ttsSupported &&
-            speak &&
-            displayText && (
-              <button
-                type="button"
-                onClick={() => speak(displayText, message.id)}
-                disabled={isLoadingVoice}
-                className={cn(
-                  "flex items-center gap-1 text-[10px] text-muted-foreground",
-                  "hover:text-primary transition-colors px-1 py-0.5 rounded disabled:opacity-50",
-                  (isSpeaking || isLoadingVoice) && "text-primary"
-                )}
-                aria-label={
-                  isLoadingVoice
-                    ? "Generating AI voice"
-                    : isSpeaking
-                      ? "Stop"
-                      : "Listen with AI voice"
-                }
-              >
-                {isLoadingVoice ? (
-                  <Loader2 className="h-3 w-3 animate-spin" />
-                ) : isSpeaking ? (
-                  <VolumeX className="h-3 w-3" />
-                ) : (
-                  <Volume2 className="h-3 w-3" />
-                )}
-                {isLoadingVoice
-                  ? "Generating voice..."
-                  : isSpeaking
-                    ? "Stop"
-                    : "AI Voice"}
-              </button>
-            )}
         </div>
 
-        {translateError && (
-          <p
-            className={cn(
-              "text-[10px] text-red-400",
-              isUser ? "self-end text-right" : "self-start"
-            )}
+        {!isUser && extra && !expanded && (
+          <button
+            type="button"
+            onClick={() => setExpanded(true)}
+            className="self-start px-1 text-[11px] font-medium"
+            style={{ color: FU.orange }}
           >
-            {translateError}
-          </p>
+            Read More
+          </button>
         )}
-      </div>
+      </MessageRow>
     </motion.div>
   );
 });

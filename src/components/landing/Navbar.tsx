@@ -1,109 +1,232 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Menu, X, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { FU_BOOK_URL } from "@/lib/fulife-theme";
 
-const NAV_LINKS = [
-  { href: "#features", label: "Features" },
-  { href: "#how-it-works", label: "How It Works" },
-  { href: "#benefits", label: "Benefits" },
-  { href: "#faq", label: "FAQ" },
-  { href: "#contact", label: "Contact" },
+const NAV_ITEMS = [
+  { href: "#home", label: "home" },
+  {
+    href: "#rooms",
+    label: "fu.life berlin",
+    sub: "Ku'damm 69 | 10707 Berlin",
+    links: [
+      {
+        href: FU_BOOK_URL,
+        label: "book your stay now",
+        external: true,
+        mint: true,
+      },
+      { href: "#amenities", label: "what's included?" },
+      { href: "#faq", label: "FAQ" },
+    ],
+  },
 ];
 
 export function Navbar() {
+  const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setScrolled(window.scrollY > 12);
+    };
+
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
-    <motion.header
-      initial={{ y: -24, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
-        scrolled
-          ? "bg-background/70 backdrop-blur-2xl border-b border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
-          : "bg-transparent"
-      )}
-    >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <a href="#" className="group flex items-center gap-2.5">
-          <motion.div
-            whileHover={{ scale: 1.05, rotate: 3 }}
-            transition={{ type: "spring", stiffness: 400 }}
-            className="relative h-9 w-9 rounded-xl bg-gradient-to-br from-primary/30 to-violet-500/20 flex items-center justify-center border border-primary/20 shadow-lg shadow-primary/10"
-          >
-            <Sparkles className="h-4 w-4 text-primary" />
-          </motion.div>
-          <span className="font-semibold text-lg tracking-tight group-hover:text-primary transition-colors">
-            HotelMind
-          </span>
+    <>
+      <header
+        className={cn(
+          "site-header fixed inset-x-0 top-0 z-50 flex items-center justify-between border-b px-5 py-4 transition-[background-color,backdrop-filter,box-shadow,border-color] duration-300 sm:px-8 md:px-10 lg:px-12",
+          scrolled
+            ? "site-header--scrolled"
+            : "border-transparent bg-transparent"
+        )}
+      >
+        <a
+          href="https://fu.life/"
+          id="logo"
+          className="block shrink-0"
+        >
+          <Image
+            src="/logo.svg"
+            alt="FU.life Logo"
+            width={50}
+            height={100}
+            priority
+            className="block h-[42px] w-auto sm:h-[46px] md:h-[50px]"
+          />
         </a>
 
-        <div className="hidden md:flex items-center gap-1">
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="relative px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors group"
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+          <a
+            href="#"
+            id="nav-trigger"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            onClick={(e) => {
+              e.preventDefault();
+              setMenuOpen((o) => !o);
+            }}
+            className="relative flex h-[56px] w-[56px] shrink-0 items-center justify-center no-underline sm:h-[64px] sm:w-[64px] md:h-[72px] md:w-[72px]"
+          >
+            <span
+              className={cn(
+                "nav-slogan-spin pointer-events-none absolute inset-0 flex items-center justify-center",
+                menuOpen && "nav-slogan-spin--paused"
+              )}
+              aria-hidden
             >
-              {link.label}
-              <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-px w-0 bg-primary group-hover:w-3/4 transition-all duration-300" />
-            </a>
-          ))}
-          <Button size="sm" className="ml-4" asChild>
-            <a href="#contact">Get Started</a>
-          </Button>
-        </div>
+              <Image
+                id="nav-slogan"
+                src="/nav-slogan-en.svg"
+                alt=""
+                width={100}
+                height={100}
+                className="block h-full w-full"
+              />
+            </span>
+            <span
+              id="nav-trigger-bars"
+              className={cn(
+                "nav-trigger-bars relative z-10",
+                menuOpen && "nav-trigger-bars--open"
+              )}
+            />
+          </a>
 
-        <button
-          className="md:hidden p-2 rounded-lg hover:bg-white/10 transition-colors"
-          onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Toggle menu"
-        >
-          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
-      </nav>
-
-      {mobileOpen && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          exit={{ opacity: 0, height: 0 }}
-          className="md:hidden border-t border-white/10 bg-background/95 backdrop-blur-2xl"
-        >
-          <div className="flex flex-col gap-1 px-4 py-4">
-            {NAV_LINKS.map((link, i) => (
-              <motion.a
-                key={link.href}
-                href={link.href}
-                initial={{ opacity: 0, x: -12 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.05 }}
-                onClick={() => setMobileOpen(false)}
-                className="text-sm text-muted-foreground hover:text-foreground px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors"
+          <ul
+            id="langswitch"
+            className="m-0 flex list-none items-center gap-2 p-0 sm:gap-3"
+          >
+            <li className="navbtn-mint">
+              <a
+                href={FU_BOOK_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block whitespace-nowrap rounded-full bg-[#7D99AA] px-3 py-1.5 text-[11px] font-medium text-white no-underline transition-opacity hover:opacity-90 sm:px-4 sm:py-2 sm:text-[13px]"
               >
-                {link.label}
-              </motion.a>
-            ))}
-            <Button size="sm" className="mt-2" asChild>
-              <a href="#contact" onClick={() => setMobileOpen(false)}>
-                Get Started
+                book your stay now
               </a>
-            </Button>
-          </div>
-        </motion.div>
-      )}
-    </motion.header>
+            </li>
+            <li>
+              <a
+                href="https://fu.life/de/"
+                className="de text-sm font-semibold text-[#2B2B2B] no-underline hover:opacity-70"
+              >
+                DE
+              </a>
+            </li>
+          </ul>
+        </div>
+      </header>
+
+      <AnimatePresence>
+        {menuOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="navigation-backdrop fixed inset-0 z-[60] bg-black/35"
+              onClick={() => setMenuOpen(false)}
+            />
+            <motion.div
+              id="navigation-wrapper"
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 30, stiffness: 300 }}
+              className="fixed bottom-0 right-0 top-0 z-[70] flex w-full max-w-[420px] flex-col overflow-y-auto bg-white p-8 pb-8 pt-[calc(var(--site-header-height)+1.5rem)] shadow-[-8px_0_40px_rgba(0,0,0,0.12)]"
+            >
+              <nav id="navigation">
+                <ul className="m-0 list-none p-0">
+                  {NAV_ITEMS.map((item) => (
+                    <li
+                      key={item.href}
+                      className={cn("mb-6", item.links && "stripes")}
+                    >
+                      <a
+                        href={item.href}
+                        className={cn(
+                          "text-lg text-[#2B2B2B] no-underline",
+                          item.links && "main-link"
+                        )}
+                        onClick={() => !item.links && setMenuOpen(false)}
+                      >
+                        {item.label}
+                        {item.sub && (
+                          <span className="mt-1 block text-xs text-[#6B6B6B]">
+                            {item.sub}
+                          </span>
+                        )}
+                      </a>
+                      {item.links && (
+                        <div className="secondary-links mt-4 flex flex-col gap-2">
+                          {item.links.map((link) => (
+                            <a
+                              key={link.label}
+                              href={link.href}
+                              className={cn(
+                                "navbtn rounded-full px-4 py-2.5 text-center text-sm no-underline",
+                                link.mint
+                                  ? "mint bg-[#7D99AA] text-white"
+                                  : "outline border border-[#2B2B2B] text-[#2B2B2B]"
+                              )}
+                              target={link.external ? "_blank" : undefined}
+                              rel={
+                                link.external
+                                  ? "noopener noreferrer"
+                                  : undefined
+                              }
+                              onClick={() => setMenuOpen(false)}
+                            >
+                              {link.label}
+                            </a>
+                          ))}
+                        </div>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+              <div id="copyright" className="mt-auto pt-8 text-xs text-[#9B9B9B]">
+                <p>© {new Date().getFullYear()} by FU.Life</p>
+              </div>
+              <div
+                id="secondary-navigation"
+                className="flex flex-col gap-2 pt-4 text-[13px]"
+              >
+                <a
+                  href="https://fu.life/imprint"
+                  className="text-[#6B6B6B] no-underline hover:text-[#F15A24]"
+                >
+                  Imprint
+                </a>
+                <a
+                  href="https://fu.life/privacy-policy"
+                  className="text-[#6B6B6B] no-underline hover:text-[#F15A24]"
+                >
+                  Privacy Policy
+                </a>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

@@ -21,15 +21,6 @@ import {
 import { generateId } from "@/lib/utils";
 import { useReplyLanguage } from "@/hooks/useReplyLanguage";
 
-export const QUICK_SUGGESTIONS = [
-  "What are your operating hours?",
-  "What is today's dish of the day?",
-  "Breakfast & meal schedule",
-  "Are there available rooms?",
-  "Hotel services & facilities",
-
-] as const;
-
 type ChatStatus = "idle" | "loading" | "error";
 
 async function hydrateAudioMessages(messages: ChatMessage[]): Promise<ChatMessage[]> {
@@ -116,6 +107,20 @@ export function useChat() {
     [messages, status, persist, replyLanguage]
   );
 
+  const sendSimpleExchange = useCallback(
+    (userText: string, assistantText: string) => {
+      if (status === "loading") return;
+      const userMessage = createTextMessage("user", userText);
+      const assistantMessage = createTextMessage("assistant", assistantText);
+      const finalMessages = [...messages, userMessage, assistantMessage];
+      setMessages(finalMessages);
+      persist(finalMessages);
+      setStatus("idle");
+      setError(null);
+    },
+    [messages, status, persist]
+  );
+
   const sendVoiceMessageHandler = useCallback(
     async (audio: Blob, duration: number) => {
       if (status === "loading") return;
@@ -199,6 +204,7 @@ export function useChat() {
     replyLanguage,
     setReplyLanguage,
     sendMessage,
+    sendSimpleExchange,
     sendVoiceMessage: sendVoiceMessageHandler,
     clearConversation: handleClear,
   };
