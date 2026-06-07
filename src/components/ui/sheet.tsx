@@ -30,16 +30,40 @@ interface SheetContentProps
   extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> {
   side?: "right" | "bottom";
   hideClose?: boolean;
+  /** Allow clicking and scrolling the page behind the panel */
+  nonModal?: boolean;
 }
 
 const SheetContent = React.forwardRef<
   React.ComponentRef<typeof DialogPrimitive.Content>,
   SheetContentProps
->(({ side = "right", hideClose = false, className, children, ...props }, ref) => (
+>(
+  (
+    {
+      side = "right",
+      hideClose = false,
+      nonModal = false,
+      className,
+      children,
+      onInteractOutside,
+      onPointerDownOutside,
+      ...props
+    },
+    ref
+  ) => (
   <SheetPortal>
-    <SheetOverlay />
+    {!nonModal && <SheetOverlay />}
     <DialogPrimitive.Content
       ref={ref}
+      aria-modal={nonModal ? false : undefined}
+      onInteractOutside={(event) => {
+        if (nonModal) event.preventDefault();
+        onInteractOutside?.(event);
+      }}
+      onPointerDownOutside={(event) => {
+        if (nonModal) event.preventDefault();
+        onPointerDownOutside?.(event);
+      }}
       className={cn(
         "fixed z-50 flex flex-col gap-4 bg-background/95 backdrop-blur-xl shadow-2xl shadow-black/40",
         side === "right" &&
@@ -59,7 +83,8 @@ const SheetContent = React.forwardRef<
       )}
     </DialogPrimitive.Content>
   </SheetPortal>
-));
+  )
+);
 SheetContent.displayName = DialogPrimitive.Content.displayName;
 
 const SheetHeader = ({
