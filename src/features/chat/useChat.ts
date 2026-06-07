@@ -20,6 +20,10 @@ import {
 } from "@/lib/audio-storage";
 import { generateId } from "@/lib/utils";
 import { useReplyLanguage } from "@/hooks/useReplyLanguage";
+import {
+  getLanguageSwitchConfirmation,
+  type ReplyLanguage,
+} from "@/lib/reply-language";
 
 type ChatStatus = "idle" | "loading" | "error";
 
@@ -107,18 +111,97 @@ export function useChat() {
     [messages, status, persist, replyLanguage]
   );
 
-  const sendSimpleExchange = useCallback(
-    (userText: string, assistantText: string) => {
+  const sendLanguageSwitch = useCallback(
+    async (lang: ReplyLanguage) => {
       if (status === "loading") return;
-      const userMessage = createTextMessage("user", userText);
-      const assistantMessage = createTextMessage("assistant", assistantText);
-      const finalMessages = [...messages, userMessage, assistantMessage];
-      setMessages(finalMessages);
-      persist(finalMessages);
-      setStatus("idle");
+
+      const userMessage: ChatMessage = {
+        ...createTextMessage("user", ""),
+        langSwitch: lang,
+      };
+
+      setMessages((prev) => {
+        const withUser = [...prev, userMessage];
+        persist(withUser);
+        return withUser;
+      });
+      setStatus("loading");
       setError(null);
+
+      const delay = 500 + Math.random() * 400;
+      await new Promise((resolve) => setTimeout(resolve, delay));
+
+      const assistantMessage: ChatMessage = {
+        ...createTextMessage("assistant", getLanguageSwitchConfirmation(lang)),
+        languageConfirmation: true,
+      };
+
+      setMessages((prev) => {
+        const finalMessages = [...prev, assistantMessage];
+        persist(finalMessages);
+        return finalMessages;
+      });
+      setStatus("idle");
     },
-    [messages, status, persist]
+    [status, persist]
+  );
+
+  const sendRoomCardsExchange = useCallback(
+    async (userText: string) => {
+      if (status === "loading") return;
+
+      const userMessage = createTextMessage("user", userText);
+      setMessages((prev) => {
+        const withUser = [...prev, userMessage];
+        persist(withUser);
+        return withUser;
+      });
+      setStatus("loading");
+      setError(null);
+
+      const delay = 500 + Math.random() * 400;
+      await new Promise((resolve) => setTimeout(resolve, delay));
+
+      const assistantMessage: ChatMessage = {
+        ...createTextMessage("assistant", ""),
+        richReply: "room-cards",
+      };
+
+      setMessages((prev) => {
+        const finalMessages = [...prev, assistantMessage];
+        persist(finalMessages);
+        return finalMessages;
+      });
+      setStatus("idle");
+    },
+    [status, persist]
+  );
+
+  const sendSimpleExchange = useCallback(
+    async (userText: string, assistantText: string) => {
+      if (status === "loading") return;
+
+      const userMessage = createTextMessage("user", userText);
+      setMessages((prev) => {
+        const withUser = [...prev, userMessage];
+        persist(withUser);
+        return withUser;
+      });
+      setStatus("loading");
+      setError(null);
+
+      const delay = 500 + Math.random() * 400;
+      await new Promise((resolve) => setTimeout(resolve, delay));
+
+      const assistantMessage = createTextMessage("assistant", assistantText);
+      setMessages((prev) => {
+        const finalMessages = [...prev, assistantMessage];
+        persist(finalMessages);
+        return finalMessages;
+      });
+      setStatus("idle");
+    },
+    [status, persist]
   );
 
   const sendVoiceMessageHandler = useCallback(
@@ -205,6 +288,8 @@ export function useChat() {
     setReplyLanguage,
     sendMessage,
     sendSimpleExchange,
+    sendRoomCardsExchange,
+    sendLanguageSwitch,
     sendVoiceMessage: sendVoiceMessageHandler,
     clearConversation: handleClear,
   };

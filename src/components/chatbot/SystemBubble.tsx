@@ -1,24 +1,28 @@
 "use client";
 
-import { memo } from "react";
-import { MessageRow } from "./ChatAvatar";
+import { memo, useRef } from "react";
+import { MessageBubbleRow } from "./MessageBubbleRow";
 import { FU } from "@/lib/fulife-theme";
 
 interface SystemBubbleProps {
   children: React.ReactNode;
+  timestamp?: number;
 }
 
 export const SystemBubble = memo(function SystemBubble({
   children,
+  timestamp,
 }: SystemBubbleProps) {
+  const defaultTimestamp = useRef(Date.now()).current;
+
   return (
-    <MessageRow role="assistant">
+    <MessageBubbleRow timestamp={timestamp ?? defaultTimestamp}>
       <div
-        className="inline-block max-w-full rounded-2xl rounded-tl-sm px-3.5 py-2.5 text-[13px] leading-relaxed text-[#2B2B2B]"
+        className="inline-block max-w-full rounded-2xl rounded-tl-sm px-3.5 py-2.5 text-[13px] leading-relaxed text-[#2B2B2B] font-emoji"
         style={{ backgroundColor: FU.lightGray }}
       >
         {children}
       </div>
-    </MessageRow>
+    </MessageBubbleRow>
   );
 });

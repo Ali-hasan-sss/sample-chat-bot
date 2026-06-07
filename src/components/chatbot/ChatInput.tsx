@@ -11,7 +11,7 @@ import {
 } from "react";
 import { ArrowUp } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { FU } from "@/lib/fulife-theme";
+import { useChatTheme } from "./ChatThemeContext";
 
 export interface ChatInputHandle {
   refocusIfEngaged: () => void;
@@ -28,6 +28,7 @@ export const ChatInput = memo(
     { onSend, disabled, isSending },
     ref
   ) {
+    const { theme } = useChatTheme();
     const [value, setValue] = useState("");
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const userEngagedRef = useRef(false);
@@ -105,11 +106,13 @@ export const ChatInput = memo(
               if (isSending) return;
               setValue(e.target.value);
             }}
-            onFocus={() => {
+            onFocus={(e) => {
               userEngagedRef.current = true;
               keepKeyboardRef.current = true;
+              e.currentTarget.style.borderColor = theme.accentSoft;
             }}
-            onBlur={() => {
+            onBlur={(e) => {
+              e.currentTarget.style.borderColor = "#E0E0E0";
               window.setTimeout(() => {
                 if (document.activeElement === textareaRef.current) return;
                 if (keepKeyboardRef.current && isSending) {
@@ -127,8 +130,7 @@ export const ChatInput = memo(
             enterKeyHint="send"
             className={cn(
               "flex-1 resize-none rounded-lg border border-[#E0E0E0] bg-white px-3 py-2 text-sm text-[#2B2B2B]",
-              "placeholder:text-[#9B9B9B] focus:outline-none focus:border-[#F15A24]/50",
-              "disabled:opacity-50 max-h-[100px] overflow-y-auto scrollbar-none",
+              "placeholder:text-[#9B9B9B] focus:outline-none disabled:opacity-50 max-h-[100px] overflow-y-auto scrollbar-none",
               isSending && "opacity-80"
             )}
           />
@@ -148,7 +150,7 @@ export const ChatInput = memo(
               "flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white transition-opacity",
               canSend ? "opacity-100" : "opacity-35 cursor-not-allowed"
             )}
-            style={{ backgroundColor: FU.orange }}
+            style={{ backgroundColor: theme.accent }}
           >
             <ArrowUp className="h-4 w-4" strokeWidth={2.5} />
           </button>

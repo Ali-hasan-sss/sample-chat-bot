@@ -41,6 +41,16 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
+.font-emoji {
+  font-family:
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Noto Color Emoji",
+    emoji,
+    var(--font-sans),
+    sans-serif;
+}
+
 ::selection {
   background: color-mix(in srgb, var(--primary) 30%, transparent);
 }

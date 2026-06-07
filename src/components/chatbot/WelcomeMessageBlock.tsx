@@ -13,7 +13,7 @@ interface WelcomeMessageBlockProps {
   language: ReplyLanguage;
   showActions?: boolean;
   onLanguageChange: (lang: ReplyLanguage) => void;
-  onNavSelect: (prompt: string, simpleKey?: string) => void;
+  onNavSelect: (prompt: string, simpleKey?: string, displayText?: string) => void;
   disabled?: boolean;
 }
 
@@ -45,7 +45,7 @@ export const WelcomeMessageBlock = memo(function WelcomeMessageBlock({
             <WidgetButton
               key={card.id}
               disabled={disabled}
-              onClick={() => onNavSelect(card.prompt, card.id)}
+              onClick={() => onNavSelect(card.prompt, card.id, card.title)}
             >
               {card.title}
             </WidgetButton>
@@ -56,10 +56,10 @@ export const WelcomeMessageBlock = memo(function WelcomeMessageBlock({
               key={option.code}
               disabled={disabled}
               ariaLabel={`Switch to ${option.label}`}
-              className="flex items-center justify-center !py-2"
+              className="flex items-center justify-center !py-2 text-sm [&_img]:h-5 [&_img]:w-5"
               onClick={() => onLanguageChange(option.code)}
             >
-              <LanguageFlag language={option.code} size={22} />
+              <LanguageFlag language={option.code} showLabel />
             </WidgetButton>
           ))}
         </WidgetButtonGroup>

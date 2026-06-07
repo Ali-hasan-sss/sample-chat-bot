@@ -8,7 +8,11 @@ import { formatAssistantReply } from "@/lib/sanitize";
 import { splitReadMore } from "@/lib/openai";
 import type { ChatMessage } from "@/types/chat";
 import { VoiceMessagePlayer } from "./VoiceMessagePlayer";
-import { MessageRow } from "./ChatAvatar";
+import { MessageBubbleRow } from "./MessageBubbleRow";
+import { LanguageFlag } from "./LanguageFlag";
+import { RoomCardsReply } from "./RoomCardsReply";
+import { useChatTheme } from "./ChatThemeContext";
+import { useReplyLanguage } from "@/hooks/useReplyLanguage";
 import { FU } from "@/lib/fulife-theme";
 
 interface ChatMessageBubbleProps {
@@ -25,8 +29,13 @@ function getSourceText(message: ChatMessage, isUser: boolean): string {
 export const ChatMessageBubble = memo(function ChatMessageBubble({
   message,
 }: ChatMessageBubbleProps) {
+  const { theme } = useChatTheme();
+  const { replyLanguage } = useReplyLanguage();
   const isUser = message.role === "user";
+  const isLangSwitch = Boolean(message.langSwitch && isUser);
+  const isRoomCards = message.richReply === "room-cards";
   const isAudio = message.type === "audio";
+
   const sourceText = useMemo(
     () => getSourceText(message, isUser),
     [message, isUser]
@@ -34,8 +43,10 @@ export const ChatMessageBubble = memo(function ChatMessageBubble({
 
   const { preview, extra } = useMemo(
     () =>
-      isUser ? { preview: sourceText, extra: null } : splitReadMore(sourceText),
-    [isUser, sourceText]
+      isUser || isRoomCards
+        ? { preview: sourceText, extra: null }
+        : splitReadMore(sourceText),
+    [isUser, isRoomCards, sourceText]
   );
 
   const [expanded, setExpanded] = useState(false);
@@ -51,54 +62,76 @@ export const ChatMessageBubble = memo(function ChatMessageBubble({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.2 }}
     >
-      <MessageRow role={isUser ? "user" : "assistant"}>
-        <div
-          className={cn(
-            "rounded-2xl px-3.5 py-2.5 text-[13px] leading-relaxed whitespace-pre-wrap",
-            isUser
-              ? "rounded-tr-sm text-white"
-              : "rounded-tl-sm text-[#2B2B2B]"
-          )}
-          style={{
-            backgroundColor: isUser ? FU.orange : FU.lightGray,
-          }}
-        >
-          {isAudio ? (
-            <div className="space-y-2">
-              {showText && displayText && <p>{displayText}</p>}
-              {message.audioUrl && (
-                <div className={showText && displayText ? "pt-1" : ""}>
-                  {isUser && (
-                    <div className="mb-1 flex items-center gap-1 text-[10px] opacity-70">
-                      <Mic className="h-3 w-3" />
-                      <span>Voice</span>
+      <MessageBubbleRow
+        isUser={isUser}
+        timestamp={message.timestamp}
+        wide={isRoomCards}
+      >
+        {isLangSwitch && message.langSwitch ? (
+          <div
+            className="inline-flex items-center rounded-2xl rounded-tr-sm px-3.5 py-2 text-sm text-white shadow-sm [&_span]:text-white"
+            style={{ backgroundColor: theme.accent }}
+          >
+            <LanguageFlag language={message.langSwitch} showLabel size={20} />
+          </div>
+        ) : isRoomCards ? (
+          <div
+            className="w-full rounded-2xl rounded-tl-sm px-3 py-3 text-[#2B2B2B]"
+            style={{ backgroundColor: FU.lightGray }}
+          >
+            <RoomCardsReply language={replyLanguage} />
+          </div>
+        ) : (
+          <>
+            <div
+              className={cn(
+                "rounded-2xl px-3.5 py-2.5 text-[13px] leading-relaxed whitespace-pre-wrap font-emoji",
+                isUser
+                  ? "rounded-tr-sm text-white"
+                  : "rounded-tl-sm text-[#2B2B2B]"
+              )}
+              style={{
+                backgroundColor: isUser ? theme.accent : FU.lightGray,
+              }}
+            >
+              {isAudio ? (
+                <div className="space-y-2">
+                  {showText && displayText && <p>{displayText}</p>}
+                  {message.audioUrl && (
+                    <div className={showText && displayText ? "pt-1" : ""}>
+                      {isUser && (
+                        <div className="mb-1 flex items-center gap-1 text-[10px] opacity-70">
+                          <Mic className="h-3 w-3" />
+                          <span>Voice</span>
+                        </div>
+                      )}
+                      <VoiceMessagePlayer
+                        src={message.audioUrl}
+                        duration={message.duration}
+                        isUser={isUser}
+                        autoPlay={!isUser && message.autoPlayVoice}
+                      />
                     </div>
                   )}
-                  <VoiceMessagePlayer
-                    src={message.audioUrl}
-                    duration={message.duration}
-                    isUser={isUser}
-                    autoPlay={!isUser && message.autoPlayVoice}
-                  />
                 </div>
+              ) : (
+                displayText
               )}
             </div>
-          ) : (
-            displayText
-          )}
-        </div>
 
-        {!isUser && extra && !expanded && (
-          <button
-            type="button"
-            onClick={() => setExpanded(true)}
-            className="self-start px-1 text-[11px] font-medium"
-            style={{ color: FU.orange }}
-          >
-            Read More
-          </button>
+            {!isUser && extra && !expanded && (
+              <button
+                type="button"
+                onClick={() => setExpanded(true)}
+                className="self-start px-1 text-[11px] font-medium"
+                style={{ color: theme.accent }}
+              >
+                Read More
+              </button>
+            )}
+          </>
         )}
-      </MessageRow>
+      </MessageBubbleRow>
     </motion.div>
   );
 });

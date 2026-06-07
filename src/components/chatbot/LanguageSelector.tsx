@@ -26,7 +26,7 @@ export const LanguageSelector = memo(function LanguageSelector({
 
   return (
     <div
-      className="flex items-center gap-1"
+      className="flex items-center gap-1.5"
       role="radiogroup"
       aria-label="Reply language"
     >
@@ -43,24 +43,24 @@ export const LanguageSelector = memo(function LanguageSelector({
             disabled={disabled}
             onClick={() => onChange(option.code)}
             className={cn(
-              "flex h-8 w-8 items-center justify-center rounded-full p-0.5 transition-all duration-200 disabled:opacity-50",
+              "rounded-full px-2.5 py-1 text-xs transition-all duration-200 disabled:opacity-50",
               isHeader
                 ? selected
-                  ? "bg-white shadow-md scale-105"
-                  : "bg-white/20 hover:bg-white/30"
+                  ? "bg-white text-[#2B2B2B] shadow-md"
+                  : "bg-white/20 text-white hover:bg-white/30"
                 : selected
-                  ? "shadow-md scale-105"
+                  ? "shadow-md"
                   : "shadow-sm hover:shadow-md"
             )}
             style={
-              !isHeader && selected
-                ? { backgroundColor: FU.lightGray }
-                : !isHeader
-                  ? { backgroundColor: FU.lightGray }
-                  : undefined
+              !isHeader
+                ? {
+                    backgroundColor: selected ? FU.lightGray : "#fff",
+                  }
+                : undefined
             }
           >
-            <LanguageFlag language={option.code} size={22} />
+            <LanguageFlag language={option.code} showLabel />
           </button>
         );
       })}

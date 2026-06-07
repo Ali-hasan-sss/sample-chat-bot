@@ -2,14 +2,51 @@ export type ReplyLanguage = "en" | "de" | "fr";
 
 export const REPLY_LANGUAGE_STORAGE_KEY = "fulife-reply-language";
 
+/** Unicode flag emoji — may not render on Windows without an emoji font */
+export const LANGUAGE_FLAG_EMOJI: Record<ReplyLanguage, string> = {
+  en: String.fromCodePoint(0x1f1ec, 0x1f1e7),
+  de: String.fromCodePoint(0x1f1e9, 0x1f1ea),
+  fr: String.fromCodePoint(0x1f1eb, 0x1f1f7),
+};
+
+/** Twemoji asset ids for cross-platform flag display (same Unicode emoji) */
+export const LANGUAGE_FLAG_TWEMOJI: Record<ReplyLanguage, string> = {
+  en: "1f1ec-1f1e7",
+  de: "1f1e9-1f1ea",
+  fr: "1f1eb-1f1f7",
+};
+
+export const TWEMOJI_FLAG_BASE =
+  "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg";
+
 export const REPLY_LANGUAGE_OPTIONS: {
   code: ReplyLanguage;
   label: string;
   nativeLabel: string;
+  flag: string;
+  twemoji: string;
 }[] = [
-  { code: "en", label: "English", nativeLabel: "English" },
-  { code: "de", label: "German", nativeLabel: "Deutsch" },
-  { code: "fr", label: "French", nativeLabel: "Français" },
+  {
+    code: "en",
+    label: "English",
+    nativeLabel: "English",
+    flag: LANGUAGE_FLAG_EMOJI.en,
+    twemoji: LANGUAGE_FLAG_TWEMOJI.en,
+  },
+  {
+    code: "de",
+    label: "German",
+    nativeLabel: "Deutsch",
+    flag: LANGUAGE_FLAG_EMOJI.de,
+    twemoji: LANGUAGE_FLAG_TWEMOJI.de,
+  },
+  {
+    code: "fr",
+    label: "French",
+    nativeLabel: "Français",
+    flag: LANGUAGE_FLAG_EMOJI.fr,
+    twemoji: LANGUAGE_FLAG_TWEMOJI.fr,
+  },
 ];
 
 export function isReplyLanguage(value: unknown): value is ReplyLanguage {
@@ -19,6 +56,20 @@ export function isReplyLanguage(value: unknown): value is ReplyLanguage {
 /** Default is always English on first open */
 export function getDefaultReplyLanguage(): ReplyLanguage {
   return "en";
+}
+
+export function getLanguageSwitchConfirmation(lang: ReplyLanguage): string {
+  const option = REPLY_LANGUAGE_OPTIONS.find((item) => item.code === lang);
+  const name = option?.nativeLabel ?? lang;
+
+  switch (lang) {
+    case "de":
+      return `Die Antwortsprache wurde auf ${name} geändert.`;
+    case "fr":
+      return `La langue des réponses a été changée en ${name}.`;
+    default:
+      return `Reply language has been changed to ${name}.`;
+  }
 }
 
 export function getReplyLanguageInstruction(lang: ReplyLanguage): string {

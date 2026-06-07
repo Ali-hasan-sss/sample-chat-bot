@@ -4,13 +4,15 @@ import { memo } from "react";
 import { motion } from "framer-motion";
 import { Search } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { FU } from "@/lib/fulife-theme";
+import { useChatTheme } from "./ChatThemeContext";
 
 interface ChatButtonProps {
   onClick: () => void;
 }
 
 export function ChatButton({ onClick }: ChatButtonProps) {
+  const { theme } = useChatTheme();
+
   return (
     <div className="fixed bottom-6 right-6 z-[60] flex flex-col items-end gap-3">
       <motion.div
@@ -30,7 +32,7 @@ export function ChatButton({ onClick }: ChatButtonProps) {
           "text-white cursor-pointer",
           "shadow-lg shadow-black/20 hover:shadow-xl transition-shadow"
         )}
-        style={{ backgroundColor: FU.orange }}
+        style={{ backgroundColor: theme.accent }}
         initial={{ opacity: 0, scale: 0.5, y: 40 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         whileHover={{ scale: 1.06 }}

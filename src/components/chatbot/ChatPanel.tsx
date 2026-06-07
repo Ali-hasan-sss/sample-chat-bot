@@ -10,8 +10,10 @@ import { TypingIndicator } from "./TypingIndicator";
 import { QuickSuggestions } from "./QuickSuggestions";
 import { WelcomeMessageBlock } from "./WelcomeMessageBlock";
 import { FlagUserBubble } from "./FlagUserBubble";
+import { ChatThemeToggle } from "./ChatThemeToggle";
+import { useChatTheme } from "./ChatThemeContext";
 import { useChat } from "@/features/chat/useChat";
-import { FU, FU_BOOK_URL } from "@/lib/fulife-theme";
+import { FU_BOOK_URL } from "@/lib/fulife-theme";
 import type { ReplyLanguage } from "@/lib/reply-language";
 import {
   getSimpleAnswer,
@@ -48,24 +50,34 @@ export const ChatPanel = memo(function ChatPanel({
     error,
     sendMessage,
     sendSimpleExchange,
+    sendRoomCardsExchange,
+    sendLanguageSwitch,
     clearConversation,
     isLoaded,
     replyLanguage,
     setReplyLanguage,
   } = useChat();
+  const { theme } = useChatTheme();
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<ChatInputHandle>(null);
   const [welcomeSegments, setWelcomeSegments] = useState<WelcomeSegment[]>(() => [
     createSegment({ type: "welcome", lang: replyLanguage }),
   ]);
-  const [conversationLangSwitches, setConversationLangSwitches] = useState<
-    { id: string; lang: ReplyLanguage }[]
-  >([]);
 
   const hasConversation = messages.length > 0;
   const isExpanded = variant === "expanded";
   const isLoading = status === "loading";
+  const [isWelcoming, setIsWelcoming] = useState(false);
+  const welcomeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const getLastWelcomeLang = useCallback((): ReplyLanguage => {
+    for (let i = welcomeSegments.length - 1; i >= 0; i -= 1) {
+      const segment = welcomeSegments[i];
+      if (segment.type === "welcome") return segment.lang;
+    }
+    return replyLanguage;
+  }, [welcomeSegments, replyLanguage]);
 
   const lastWelcomeIndex = welcomeSegments.reduce(
     (last, segment, index) => (segment.type === "welcome" ? index : last),
@@ -82,7 +94,22 @@ export const ChatPanel = memo(function ChatPanel({
   useEffect(() => {
     if (!isLoaded) return;
     scrollToBottom();
-  }, [isLoaded, messages, status, welcomeSegments, conversationLangSwitches, scrollToBottom]);
+  }, [isLoaded, messages, status, welcomeSegments, isWelcoming, scrollToBottom]);
+
+  useEffect(() => {
+    if (!isLoaded || hasConversation) return;
+    setWelcomeSegments((prev) => {
+      if (prev.length !== 1 || prev[0]?.type !== "welcome") return prev;
+      if (prev[0].lang === replyLanguage) return prev;
+      return [createSegment({ type: "welcome", lang: replyLanguage })];
+    });
+  }, [isLoaded, replyLanguage, hasConversation]);
+
+  useEffect(() => {
+    return () => {
+      if (welcomeTimerRef.current) clearTimeout(welcomeTimerRef.current);
+    };
+  }, []);
 
   const handleSend = useCallback(
     (text: string) => {
@@ -93,11 +120,11 @@ export const ChatPanel = memo(function ChatPanel({
   );
 
   const handleNavSelect = useCallback(
-    (prompt: string, simpleKey?: string) => {
+    (prompt: string, simpleKey?: string, displayText?: string) => {
       if (simpleKey) {
         const answer = getSimpleAnswer(simpleKey, replyLanguage);
         if (answer) {
-          sendSimpleExchange(prompt, answer);
+          sendSimpleExchange(displayText ?? prompt, answer);
           return;
         }
       }
@@ -115,40 +142,69 @@ export const ChatPanel = memo(function ChatPanel({
       }
 
       const userText = getQuickSuggestionLabel(id, replyLanguage);
+
+      if (id === "rooms") {
+        void sendRoomCardsExchange(userText);
+        return;
+      }
+
       const answer = getSimpleAnswer(id, replyLanguage);
       if (answer) {
         sendSimpleExchange(userText, answer);
       }
     },
-    [replyLanguage, sendSimpleExchange]
+    [replyLanguage, sendSimpleExchange, sendRoomCardsExchange]
   );
 
   const handleLanguageChange = useCallback(
     (lang: ReplyLanguage) => {
-      if (lang === replyLanguage || isLoading) return;
+      if (isLoading || isWelcoming) return;
 
       if (hasConversation) {
-        setConversationLangSwitches((prev) => [
-          ...prev,
-          { id: createSegment({ type: "lang-switch", lang }).id, lang },
-        ]);
+        if (lang === replyLanguage) return;
         setReplyLanguage(lang);
+        void sendLanguageSwitch(lang);
         return;
       }
+
+      const currentWelcomeLang = getLastWelcomeLang();
+      if (lang === currentWelcomeLang) return;
 
       setWelcomeSegments((prev) => [
         ...prev,
         createSegment({ type: "lang-switch", lang }),
-        createSegment({ type: "welcome", lang }),
       ]);
       setReplyLanguage(lang);
+      setIsWelcoming(true);
+
+      if (welcomeTimerRef.current) clearTimeout(welcomeTimerRef.current);
+      welcomeTimerRef.current = setTimeout(() => {
+        setWelcomeSegments((prev) => [
+          ...prev,
+          createSegment({ type: "welcome", lang }),
+        ]);
+        setIsWelcoming(false);
+        welcomeTimerRef.current = null;
+      }, 650);
     },
-    [replyLanguage, isLoading, setReplyLanguage, hasConversation]
+    [
+      replyLanguage,
+      isLoading,
+      isWelcoming,
+      setReplyLanguage,
+      hasConversation,
+      getLastWelcomeLang,
+      sendLanguageSwitch,
+    ]
   );
 
   const handleClear = useCallback(async () => {
+    if (welcomeTimerRef.current) {
+      clearTimeout(welcomeTimerRef.current);
+      welcomeTimerRef.current = null;
+    }
+    setIsWelcoming(false);
     await clearConversation();
-    setConversationLangSwitches([]);
     setWelcomeSegments([
       createSegment({ type: "welcome", lang: replyLanguage }),
     ]);
@@ -169,7 +225,7 @@ export const ChatPanel = memo(function ChatPanel({
     lastMessage?.role === "assistant";
 
   const shellClass = isExpanded
-    ? "flex h-dvh w-full flex-col bg-white text-[#2B2B2B]"
+    ? "flex min-h-dvh w-full flex-col bg-white text-[#2B2B2B]"
     : "flex h-full min-h-0 flex-col bg-white text-[#2B2B2B]";
 
   return (
@@ -178,7 +234,7 @@ export const ChatPanel = memo(function ChatPanel({
         <div className="flex items-center gap-2.5 min-w-0">
           <div
             className="flex h-9 items-center justify-center rounded-md px-2.5 text-white text-xs font-bold tracking-wide"
-            style={{ backgroundColor: FU.orange }}
+            style={{ backgroundColor: theme.accent }}
           >
             Berlin
           </div>
@@ -187,6 +243,7 @@ export const ChatPanel = memo(function ChatPanel({
           </span>
         </div>
         <div className="flex items-center gap-0.5 shrink-0">
+          <ChatThemeToggle />
           {!isExpanded && (
             <Button
               variant="ghost"
@@ -243,10 +300,14 @@ export const ChatPanel = memo(function ChatPanel({
                 <WelcomeMessageBlock
                   key={segment.id}
                   language={segment.lang}
-                  showActions={!hasConversation && index === lastWelcomeIndex}
+                  showActions={
+                    !hasConversation &&
+                    index === lastWelcomeIndex &&
+                    !isWelcoming
+                  }
                   onLanguageChange={handleLanguageChange}
                   onNavSelect={handleNavSelect}
-                  disabled={isLoading}
+                  disabled={isLoading || isWelcoming}
                 />
               );
             })}
@@ -255,12 +316,6 @@ export const ChatPanel = memo(function ChatPanel({
               <div className="py-1">
                 {messages.map((msg) => (
                   <ChatMessageBubble key={msg.id} message={msg} />
-                ))}
-                {conversationLangSwitches.map((segment) => (
-                  <FlagUserBubble
-                    key={segment.id}
-                    language={segment.lang}
-                  />
                 ))}
               </div>
             )}
@@ -272,14 +327,14 @@ export const ChatPanel = memo(function ChatPanel({
                 replyLanguage={replyLanguage}
                 onLanguageChange={handleLanguageChange}
                 showLanguageFlags
-                disabled={isLoading}
+                disabled={isLoading || isWelcoming}
               />
             )}
           </div>
         )}
 
         <AnimatePresence>
-          {isLoading && <TypingIndicator key="typing" />}
+          {(isLoading || isWelcoming) && <TypingIndicator key="typing" />}
         </AnimatePresence>
 
         <AnimatePresence>
@@ -319,7 +374,7 @@ export const ChatPanel = memo(function ChatPanel({
             target="_blank"
             rel="noopener noreferrer"
             className="flex w-full items-center justify-center rounded-lg py-2.5 text-sm font-medium text-white"
-            style={{ backgroundColor: FU.orange }}
+            style={{ backgroundColor: theme.accent }}
           >
             Book Now
           </a>

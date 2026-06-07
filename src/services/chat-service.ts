@@ -115,10 +115,18 @@ export async function fetchSpeechAudio(
 export function buildHistoryFromMessages(
   messages: ChatMessage[]
 ): ChatHistoryItem[] {
-  return messages.slice(-10).map((m) => ({
-    role: m.role,
-    content: messageToHistoryContent(m),
-  }));
+  return messages
+    .filter(
+      (m) =>
+        !m.langSwitch &&
+        !m.languageConfirmation &&
+        m.richReply !== "room-cards"
+    )
+    .slice(-10)
+    .map((m) => ({
+      role: m.role,
+      content: messageToHistoryContent(m),
+    }));
 }
 
 /** Strip runtime-only fields before persisting to IndexedDB */

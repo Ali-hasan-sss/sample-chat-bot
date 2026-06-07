@@ -1,3 +1,5 @@
+export type RichReplyType = "room-cards";
+
 export interface ChatMessage {
   id: string;
   role: "user" | "assistant";
@@ -14,6 +16,12 @@ export interface ChatMessage {
   transcript?: string;
   /** Auto-play once when assistant voice bubble appears (not persisted) */
   autoPlayVoice?: boolean;
+  /** User selected a new reply language (flag bubble) */
+  langSwitch?: import("@/lib/reply-language").ReplyLanguage;
+  /** Bot confirmation after language change — excluded from AI history */
+  languageConfirmation?: boolean;
+  /** Structured in-chat reply (e.g. room cards carousel) */
+  richReply?: RichReplyType;
 }
 
 export interface ChatConversation {

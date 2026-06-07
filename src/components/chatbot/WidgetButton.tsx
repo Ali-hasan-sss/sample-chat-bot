@@ -2,6 +2,7 @@
 
 import { memo } from "react";
 import { cn } from "@/lib/utils";
+import { useChatTheme } from "./ChatThemeContext";
 
 interface WidgetButtonProps {
   children: React.ReactNode;
@@ -24,6 +25,8 @@ export const WidgetButton = memo(function WidgetButton({
   style,
   ariaLabel,
 }: WidgetButtonProps) {
+  const { theme } = useChatTheme();
+
   return (
     <button
       type="button"
@@ -31,14 +34,21 @@ export const WidgetButton = memo(function WidgetButton({
       disabled={disabled}
       aria-label={ariaLabel}
       aria-pressed={selected}
-      style={style}
+      style={
+        selected
+          ? {
+              ...style,
+              borderColor: theme.accent,
+              boxShadow: `0 0 0 1px ${theme.accentSoft}`,
+            }
+          : style
+      }
       className={cn(
         "rounded-lg border border-[#D8D8D8] bg-white text-[#2B2B2B]",
         "transition-colors hover:bg-[#FAFAFA] active:bg-[#F5F5F5] disabled:opacity-50",
         fullWidth
           ? "w-full px-3 py-2.5 text-left text-[13px]"
           : "w-auto shrink-0 px-3 py-1.5 text-xs whitespace-nowrap",
-        selected && "border-[#F15A24] ring-1 ring-[#F15A24]/30",
         className
       )}
     >

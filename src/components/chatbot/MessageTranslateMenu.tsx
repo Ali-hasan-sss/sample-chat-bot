@@ -111,7 +111,7 @@ export const MessageTranslateMenu = memo(function MessageTranslateMenu({
                 {loading ? (
                   <Loader2 className="h-3 w-3 animate-spin" />
                 ) : (
-                  <LanguageFlag language={option.code} size={18} />
+                  <LanguageFlag language={option.code} />
                 )}
               </button>
             );

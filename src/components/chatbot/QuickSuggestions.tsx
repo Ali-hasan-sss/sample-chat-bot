@@ -7,7 +7,7 @@ import type { QuickSuggestionDef } from "@/lib/fulife-chat";
 import { WidgetButton } from "./WidgetButton";
 import { WidgetButtonGroup } from "./WidgetButtonGroup";
 import { LanguageFlag } from "./LanguageFlag";
-import { FU } from "@/lib/fulife-theme";
+import { useChatTheme } from "./ChatThemeContext";
 
 interface QuickSuggestionsProps {
   suggestions: readonly QuickSuggestionDef[];
@@ -26,6 +26,7 @@ export const QuickSuggestions = memo(function QuickSuggestions({
   showLanguageFlags = false,
   disabled,
 }: QuickSuggestionsProps) {
+  const { theme } = useChatTheme();
   const otherLanguages = useMemo(
     () => REPLY_LANGUAGE_OPTIONS.filter((option) => option.code !== replyLanguage),
     [replyLanguage]
@@ -39,7 +40,7 @@ export const QuickSuggestions = memo(function QuickSuggestions({
           fullWidth={false}
           disabled={disabled}
           className={item.id === "book" ? "font-medium hover:opacity-90" : undefined}
-          style={item.id === "book" ? { backgroundColor: FU.orange, color: "#fff", borderColor: FU.orange } : undefined}
+          style={item.id === "book" ? { backgroundColor: theme.accent, color: "#fff", borderColor: theme.accent } : undefined}
           onClick={() => onSelect(item.id)}
         >
           {item.label[replyLanguage] ?? item.label.en}
@@ -53,10 +54,10 @@ export const QuickSuggestions = memo(function QuickSuggestions({
             fullWidth={false}
             disabled={disabled}
             ariaLabel={`Switch to ${option.label}`}
-            className="flex items-center justify-center !px-2.5 !py-1.5"
+            className="flex items-center justify-center !px-3 !py-1.5 text-sm [&_img]:h-4 [&_img]:w-4"
             onClick={() => onLanguageChange(option.code)}
           >
-            <LanguageFlag language={option.code} size={20} />
+            <LanguageFlag language={option.code} showLabel />
           </WidgetButton>
         ))}
     </WidgetButtonGroup>
