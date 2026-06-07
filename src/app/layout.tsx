@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Inter } from "next/font/google";
 import { ChatbotLoader } from "@/components/chatbot/ChatbotLoader";
 import "./globals.css";
 
@@ -12,6 +12,13 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
+});
+
+/** Chat UI — consistent EN/DE/FR rendering in Safari & Chrome */
+const interChat = Inter({
+  variable: "--font-chat",
+  subsets: ["latin", "latin-ext"],
   display: "swap",
 });
 
@@ -57,7 +64,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${interChat.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-white text-[#2B2B2B]">
         {children}

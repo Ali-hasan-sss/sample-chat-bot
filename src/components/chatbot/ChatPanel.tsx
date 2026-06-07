@@ -60,6 +60,7 @@ export const ChatPanel = memo(function ChatPanel({
   const { theme } = useChatTheme();
 
   const scrollRef = useRef<HTMLDivElement>(null);
+  const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<ChatInputHandle>(null);
   const [welcomeSegments, setWelcomeSegments] = useState<WelcomeSegment[]>(() => [
     createSegment({ type: "welcome", lang: replyLanguage }),
@@ -85,16 +86,16 @@ export const ChatPanel = memo(function ChatPanel({
   );
 
   const scrollToBottom = useCallback(() => {
-    requestAnimationFrame(() => {
+    const run = () => {
+      bottomRef.current?.scrollIntoView({ block: "end", behavior: "auto" });
       const el = scrollRef.current;
       if (el) el.scrollTop = el.scrollHeight;
+    };
+    requestAnimationFrame(() => {
+      run();
+      requestAnimationFrame(run);
     });
   }, []);
-
-  useEffect(() => {
-    if (!isLoaded) return;
-    scrollToBottom();
-  }, [isLoaded, messages, status, welcomeSegments, isWelcoming, scrollToBottom]);
 
   useEffect(() => {
     if (!isLoaded || hasConversation) return;
@@ -224,16 +225,35 @@ export const ChatPanel = memo(function ChatPanel({
     !isLoading &&
     lastMessage?.role === "assistant";
 
+  useEffect(() => {
+    if (!isLoaded) return;
+    scrollToBottom();
+    const timer = window.setTimeout(scrollToBottom, 120);
+    const lateTimer = window.setTimeout(scrollToBottom, 400);
+    return () => {
+      window.clearTimeout(timer);
+      window.clearTimeout(lateTimer);
+    };
+  }, [
+    isLoaded,
+    messages,
+    status,
+    welcomeSegments,
+    isWelcoming,
+    showQuickSuggestions,
+    scrollToBottom,
+  ]);
+
   const shellClass = isExpanded
-    ? "flex min-h-dvh w-full flex-col bg-white text-[#2B2B2B]"
-    : "flex h-full min-h-0 flex-col bg-white text-[#2B2B2B]";
+    ? "chat-ui flex min-h-0 flex-1 w-full flex-col overflow-hidden bg-white text-[#2B2B2B]"
+    : "chat-ui flex h-full min-h-0 flex-col overflow-hidden bg-white text-[#2B2B2B]";
 
   return (
     <div className={shellClass}>
       <header className="flex items-center justify-between gap-2 px-4 py-3 shrink-0 border-b border-[#EFEFEF] bg-white">
         <div className="flex items-center gap-2.5 min-w-0">
           <div
-            className="flex h-9 items-center justify-center rounded-md px-2.5 text-white text-xs font-bold tracking-wide"
+            className="flex h-9 items-center justify-center rounded-md px-2.5 text-white text-xs font-bold"
             style={{ backgroundColor: theme.accent }}
           >
             Berlin
@@ -282,7 +302,7 @@ export const ChatPanel = memo(function ChatPanel({
 
       <div
         ref={scrollRef}
-        className="relative flex-1 overflow-y-auto scrollbar-none bg-white"
+        className="relative min-h-0 flex-1 overflow-y-auto overscroll-contain scrollbar-none bg-white"
       >
         {!isLoaded ? (
           <p className="flex items-center justify-center h-32 text-sm text-[#6B6B6B]">
@@ -365,10 +385,12 @@ export const ChatPanel = memo(function ChatPanel({
             .
           </p>
         )}
+
+        <div ref={bottomRef} className="h-px shrink-0" aria-hidden />
       </div>
 
       {!hasConversation && isLoaded && (
-        <div className="shrink-0 px-3 pb-2">
+        <div className="shrink-0 px-3 pb-2 bg-white">
           <a
             href={FU_BOOK_URL}
             target="_blank"
@@ -381,12 +403,14 @@ export const ChatPanel = memo(function ChatPanel({
         </div>
       )}
 
-      <ChatInput
+      <div className="shrink-0 bg-white">
+        <ChatInput
         ref={inputRef}
         onSend={handleSend}
         disabled={!isLoaded}
         isSending={isLoading}
-      />
+        />
+      </div>
     </div>
   );
 });

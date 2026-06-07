@@ -85,7 +85,7 @@ export const ChatMessageBubble = memo(function ChatMessageBubble({
           <>
             <div
               className={cn(
-                "rounded-2xl px-3.5 py-2.5 text-[13px] leading-relaxed whitespace-pre-wrap font-emoji",
+                "chat-message-text rounded-2xl px-3.5 py-2.5 text-[13px] leading-relaxed whitespace-pre-wrap",
                 isUser
                   ? "rounded-tr-sm text-white"
                   : "rounded-tl-sm text-[#2B2B2B]"

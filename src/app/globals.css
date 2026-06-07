@@ -41,14 +41,28 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
-.font-emoji {
+/* Chatbot — Inter web font, normal letter-spacing (Safari-safe) */
+.chat-ui {
   font-family:
-    "Apple Color Emoji",
-    "Segoe UI Emoji",
-    "Noto Color Emoji",
-    emoji,
-    var(--font-sans),
+    var(--font-chat),
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
     sans-serif;
+  letter-spacing: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.chat-ui .chat-message-text {
+  letter-spacing: 0;
+  font-feature-settings: "kern" 1, "liga" 1;
+  font-variant-numeric: normal;
+  text-rendering: optimizeLegibility;
 }
 
 ::selection {

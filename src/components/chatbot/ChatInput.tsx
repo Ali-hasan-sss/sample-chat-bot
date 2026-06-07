@@ -129,7 +129,7 @@ export const ChatInput = memo(
             rows={1}
             enterKeyHint="send"
             className={cn(
-              "flex-1 resize-none rounded-lg border border-[#E0E0E0] bg-white px-3 py-2 text-sm text-[#2B2B2B]",
+              "flex-1 resize-none rounded-lg border border-[#E0E0E0] bg-white px-3 py-2 text-sm text-[#2B2B2B] chat-message-text",
               "placeholder:text-[#9B9B9B] focus:outline-none disabled:opacity-50 max-h-[100px] overflow-y-auto scrollbar-none",
               isSending && "opacity-80"
             )}

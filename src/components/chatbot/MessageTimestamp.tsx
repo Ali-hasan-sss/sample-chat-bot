@@ -16,7 +16,7 @@ export function MessageTimestamp({
     <time
       dateTime={new Date(timestamp).toISOString()}
       className={cn(
-        "mt-0.5 px-1 text-[10px] font-light tracking-wide text-[#B0B0B0]",
+        "mt-0.5 px-1 text-[10px] font-normal text-[#B0B0B0]",
         className
       )}
     >

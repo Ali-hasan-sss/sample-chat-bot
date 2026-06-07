@@ -18,7 +18,7 @@ export const SystemBubble = memo(function SystemBubble({
   return (
     <MessageBubbleRow timestamp={timestamp ?? defaultTimestamp}>
       <div
-        className="inline-block max-w-full rounded-2xl rounded-tl-sm px-3.5 py-2.5 text-[13px] leading-relaxed text-[#2B2B2B] font-emoji"
+        className="chat-message-text inline-block max-w-full rounded-2xl rounded-tl-sm px-3.5 py-2.5 text-[13px] leading-relaxed text-[#2B2B2B]"
         style={{ backgroundColor: FU.lightGray }}
       >
         {children}

@@ -22,7 +22,7 @@ export const RoomCardsReply = memo(function RoomCardsReply({
 
   return (
     <div className="w-full min-w-0">
-      <p className="mb-3 text-[13px] leading-relaxed text-[#2B2B2B]">
+      <p className="chat-message-text mb-3 text-[13px] leading-relaxed text-[#2B2B2B]">
         {getRoomsReplyIntro(language)}
       </p>
 
